@@ -1,6 +1,7 @@
 import { SearchItemComponent } from './SearchItem.styled';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 function SearchItem({ anime }) {
   //! USE-STATE
@@ -35,7 +36,7 @@ function SearchItem({ anime }) {
           </div>
           <div className="itemGenre">
             {anime.genres.map((genre) => {
-              return <span>{genre}</span>;
+              return <span key={uuidv4()}>{genre}</span>;
             })}
           </div>
         </div>

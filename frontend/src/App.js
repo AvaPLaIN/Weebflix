@@ -5,13 +5,23 @@ import Player from './pages/player/Player';
 import Search from './pages/search/Search';
 import Auth from './pages/auth/Auth';
 import decode from 'jwt-decode';
+//import { isTokenValid } from './api/user';
 
 const App = () => {
   const history = useHistory();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const requireAuth = () => {
-    if (user) return true;
+    const token = user?.tokenId || user?.data.token;
+    if (token) {
+      try {
+        if (decode(token).exp > Date.now() / 1000) {
+          return true;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
     return false;
   };
 
