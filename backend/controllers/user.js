@@ -21,7 +21,7 @@ const signin = async (req, res) => {
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       process.env.JWT_TOKEN_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '12h' }
     );
 
     res.status(200).json({ result: existingUser, token });
@@ -34,6 +34,7 @@ const signup = async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
 
   try {
+    return res.status(404).json({ message: "Can't create new Users!" });
     const existingUser = await User.findOne({ email });
 
     if (existingUser)

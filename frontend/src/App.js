@@ -22,6 +22,8 @@ const App = () => {
         console.error(error);
       }
     }
+    setUser(null);
+    localStorage.clear();
     return false;
   };
 

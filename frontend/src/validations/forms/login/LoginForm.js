@@ -1,9 +1,10 @@
-import Input from '../../components/input/Input';
-import loginSchema from '../schemas/LoginValidation';
+import Input from '../../../components/input/Input';
+import loginSchema from '../../schemas/LoginValidation';
 import { Formik, Form } from 'formik';
 import { GoogleLogin } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
-import { signin } from '../../api/user';
+import { signin } from '../../../api/user';
+import { LoginComponent } from './LoginForm.styled';
 
 const LoginForm = ({ setUser, setShowLogin }) => {
   const history = useHistory();
@@ -33,7 +34,8 @@ const LoginForm = ({ setUser, setShowLogin }) => {
   };
 
   return (
-    <div>
+    <LoginComponent>
+      <h1>Einloggen</h1>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}
@@ -42,7 +44,7 @@ const LoginForm = ({ setUser, setShowLogin }) => {
         }}
       >
         {(Formik) => (
-          <Form>
+          <Form className="loginForm">
             <Input type="email" name="email" placeholder="email" />
             <Input type="password" name="password" placeholder="password" />
             <button type="submit">Login</button>
@@ -51,14 +53,16 @@ const LoginForm = ({ setUser, setShowLogin }) => {
       </Formik>
       <GoogleLogin
         clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
-        buttonText="Login"
+        buttonText="Login with Google"
         onSuccess={onLoginSuccess}
         onFailure={onFailureSuccess}
         cookiePolicy="single_host_origin"
         isSignedIn={true}
       />
-      <button onClick={() => setShowLogin(false)}>Registrieren</button>
-    </div>
+      <button onClick={() => setShowLogin(false)} className="linkRegister">
+        New? Click here to register!
+      </button>
+    </LoginComponent>
   );
 };
 

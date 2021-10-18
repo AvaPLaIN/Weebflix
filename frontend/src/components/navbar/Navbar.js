@@ -57,6 +57,7 @@ function Navbar({ user, setUser, logout }) {
               icon={faCaretDown}
             />
             <div className="options">
+              <span>{user?.data?.result?.name || user?.profileObj?.name}</span>
               <label className="switch">
                 <input type="checkbox" id="togBtn" />
                 <div className="slider round"></div>

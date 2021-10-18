@@ -1,7 +1,8 @@
-import Input from '../../components/input/Input';
-import registerSchema from '../schemas/RegisterValidation';
+import Input from '../../../components/input/Input';
+import registerSchema from '../../schemas/RegisterValidation';
 import { Formik, Form } from 'formik';
-import { signup } from '../../api/user';
+import { signup } from '../../../api/user';
+import { RegisterComponent } from './RegisterForm.styled';
 
 const RegisterForm = ({ setShowLogin }) => {
   const handleRegisterSubmit = async (registerObject, resetForm) => {
@@ -20,7 +21,7 @@ const RegisterForm = ({ setShowLogin }) => {
   };
 
   return (
-    <div>
+    <RegisterComponent>
       <Formik
         initialValues={{
           name: '',
@@ -34,7 +35,7 @@ const RegisterForm = ({ setShowLogin }) => {
         }}
       >
         {(Formik) => (
-          <Form>
+          <Form className="loginForm">
             <Input type="text" name="name" placeholder="name" />
             <Input type="email" name="email" placeholder="email" />
             <Input type="password" name="password" placeholder="password" />
@@ -47,8 +48,10 @@ const RegisterForm = ({ setShowLogin }) => {
           </Form>
         )}
       </Formik>
-      <button onClick={() => setShowLogin(true)}>Einloggen</button>
-    </div>
+      <button onClick={() => setShowLogin(true)}>
+        Already have an Account? Login here
+      </button>
+    </RegisterComponent>
   );
 };
 
