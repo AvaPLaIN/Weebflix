@@ -58,6 +58,7 @@ const LoginForm = ({ setUser, setShowLogin }) => {
         onFailure={onFailureSuccess}
         cookiePolicy="single_host_origin"
         isSignedIn={true}
+        disabled
       />
       <button onClick={() => setShowLogin(false)} className="linkRegister">
         New? Click here to register!

@@ -34,7 +34,7 @@ const signup = async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
 
   try {
-    return res.status(404).json({ message: "Can't create new Users!" });
+    //return res.status(404).json({ message: "Can't create new Users!" });
     const existingUser = await User.findOne({ email });
 
     if (existingUser)

@@ -4,6 +4,7 @@ import Home from './pages/home/Home';
 import Player from './pages/player/Player';
 import Search from './pages/search/Search';
 import Auth from './pages/auth/Auth';
+import MyList from './pages/myList/MyList';
 import decode from 'jwt-decode';
 //import { isTokenValid } from './api/user';
 
@@ -63,7 +64,23 @@ const App = () => {
       />
       <Route
         path="/player"
-        render={() => (requireAuth() ? <Player /> : <Redirect to="/" />)}
+        render={() =>
+          requireAuth() ? (
+            <Player user={user} setUser={setUser} />
+          ) : (
+            <Redirect to="/" />
+          )
+        }
+      />
+      <Route
+        path="/mylist"
+        render={() =>
+          requireAuth() ? (
+            <MyList user={user} setUser={setUser} logout={logout} />
+          ) : (
+            <Redirect to="/" />
+          )
+        }
       />
       <Route
         path="/search"

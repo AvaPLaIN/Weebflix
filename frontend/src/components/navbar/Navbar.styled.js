@@ -32,7 +32,7 @@ export const NavbarComponent = styled.div`
         display: flex;
         gap: 2rem;
 
-        li {
+        a {
           cursor: pointer;
 
           &:hover {
@@ -151,6 +151,16 @@ export const NavbarComponent = styled.div`
           input:checked + .slider:after {
             content: 'DE';
           }
+
+          .logout {
+            width: 100%;
+            height: 6rem;
+            background: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+          }
         }
 
         svg {
@@ -164,7 +174,7 @@ export const NavbarComponent = styled.div`
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1.4rem;
+            gap: 2rem;
             background-color: var(--main-color-hex);
             border-radius: 0.5rem;
             transform: translate(-25%);
@@ -178,11 +188,11 @@ export const NavbarComponent = styled.div`
     }
   }
 
-  @media (max-width: 1050px) {
+  @media (max-width: 1100px) {
     .container {
       .left {
         ul {
-          li:nth-child(6) {
+          a:nth-child(6) {
             display: none;
           }
         }
@@ -190,11 +200,11 @@ export const NavbarComponent = styled.div`
     }
   }
 
-  @media (max-width: 950px) {
+  @media (max-width: 1000px) {
     .container {
       .left {
         ul {
-          li:nth-child(5) {
+          a:nth-child(5) {
             display: none;
           }
         }
@@ -202,11 +212,23 @@ export const NavbarComponent = styled.div`
     }
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 900px) {
     .container {
       .left {
         ul {
-          li:nth-child(4) {
+          a:nth-child(4) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 820px) {
+    .container {
+      .left {
+        ul {
+          a:nth-child(3) {
             display: none;
           }
         }
@@ -218,19 +240,7 @@ export const NavbarComponent = styled.div`
     .container {
       .left {
         ul {
-          li:nth-child(3) {
-            display: none;
-          }
-        }
-      }
-    }
-  }
-
-  @media (max-width: 620px) {
-    .container {
-      .left {
-        ul {
-          li:nth-child(2) {
+          a:nth-child(2) {
             display: none;
           }
         }
@@ -243,11 +253,11 @@ export const NavbarComponent = styled.div`
     }
   }
 
-  @media (max-width: 550px) {
+  @media (max-width: 650px) {
     .container {
       .left {
         ul {
-          li:nth-child(1) {
+          a:nth-child(1) {
             display: none;
           }
         }

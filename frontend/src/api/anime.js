@@ -58,3 +58,31 @@ export const getAllAnime = async (user) => {
     console.error(error);
   }
 };
+
+export const getProgressAnimes = async (user) => {
+  const token = user?.tokenId || user?.data.token;
+  try {
+    const res = await axios.post(`${url}/animes/progress`, user, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateProgress = async (user) => {
+  const token = user?.tokenId || user?.data.token;
+  try {
+    const res = await axios.post(`${url}/animes/updateProgress`, user, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

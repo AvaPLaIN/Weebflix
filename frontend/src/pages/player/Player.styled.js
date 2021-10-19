@@ -7,6 +7,9 @@ export const PlayerComponent = styled.div`
   background-color: var(--main-color-hex);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .backwards {
     position: absolute;
@@ -52,10 +55,10 @@ export const PlayerComponent = styled.div`
   }
 
   .openEpisodes {
-    position: relative;
+    position: absolute;
     color: white;
     top: 0;
-    left: 70vw;
+    left: 70%;
     margin: auto;
     background-color: rgba(var(--main-color-rgb), 0.7);
     z-index: 99;
@@ -75,8 +78,17 @@ export const PlayerComponent = styled.div`
   .count {
     color: white;
     position: absolute;
-    left: calc(70vw + 7rem);
+    left: 75%;
     top: 1.4rem;
+    z-index: 90;
+    font-size: 2rem;
+  }
+
+  .animeTitle {
+    color: white;
+    position: absolute;
+    top: 5rem;
+    left: 10%;
     z-index: 90;
     font-size: 2rem;
   }

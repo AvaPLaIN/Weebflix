@@ -11,14 +11,26 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import { updateProgress } from '../../api/anime';
 
-function Player() {
+function Player({ user, setUser }) {
   const location = useLocation();
   const anime = location.anime;
 
+  const selectEpisode = () => {
+    const index = user?.data?.result?.progress.findIndex(
+      (prog) => prog.id === anime._id
+    );
+    if (index >= 0) {
+      return user?.data?.result?.progress[index].count;
+    } else {
+      return 0;
+    }
+  };
+
   //! USE-STATE
   const [episode, setEpisode] = useState();
-  const [currEpisodeIndex, setCurrEpisodeIndex] = useState(0);
+  const [currEpisodeIndex, setCurrEpisodeIndex] = useState(selectEpisode);
   const [isEpisodeOpen, setIsEpisodeOpen] = useState(false);
 
   //! USE-EFFECT
@@ -26,8 +38,30 @@ function Player() {
     location.anime && setEpisode(location.anime.episodes[0]);
   }, [location.anime]);
 
+  const updateUser = async (newUser) => {
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    updateProgress(user);
+  };
+
   useEffect(() => {
     setIsEpisodeOpen(false);
+    const index = user?.data?.result?.progress.findIndex(
+      (prog) => prog.id === anime._id
+    );
+
+    if (index >= 0) {
+      user?.data?.result?.progress.splice(index, 1, {
+        id: anime._id,
+        count: currEpisodeIndex,
+      });
+    } else {
+      user?.data?.result?.progress.push({
+        id: anime._id,
+        count: 0,
+      });
+    }
+    updateUser(user);
   }, [episode]);
 
   //! HANDLER
@@ -75,6 +109,7 @@ function Player() {
             icon={faThList}
           />
           <span className="count">Episode: {currEpisodeIndex + 1}</span>
+          <span className="animeTitle">{anime?.title}</span>
           <div className="container">
             <span className="title">{anime?.title}</span>
             <div className="searchbar">

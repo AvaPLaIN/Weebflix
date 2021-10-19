@@ -23,14 +23,16 @@ function Navbar({ user, setUser, logout }) {
     <NavbarComponent isScrolled={isScrolled}>
       <div className="container">
         <div className="left">
-          <img src={logo} alt="logo" />
+          <Link to="/home">
+            <img src={logo} alt="logo" />
+          </Link>
           <ul>
-            <li>Startseite</li>
-            <li>Animes</li>
-            <li>Filme</li>
-            <li>Mangas</li>
-            <li>Neu und beliebt</li>
-            <li>Meine Liste</li>
+            <Link to="/home">Startseite</Link>
+            <Link to="/home">Animes</Link>
+            <Link to="/home">Filme</Link>
+            <Link to="/home">Mangas</Link>
+            <Link to="/home">Neu und beliebt</Link>
+            <Link to="/mylist">Meine Liste</Link>
           </ul>
         </div>
         <div className="right">
@@ -58,6 +60,7 @@ function Navbar({ user, setUser, logout }) {
             />
             <div className="options">
               <span>{user?.data?.result?.name || user?.profileObj?.name}</span>
+              <Link to="/mylist">Meine Liste</Link>
               <label className="switch">
                 <input type="checkbox" id="togBtn" />
                 <div className="slider round"></div>
@@ -65,6 +68,11 @@ function Navbar({ user, setUser, logout }) {
               <span>Einstellungen</span>
               <GoogleLogout
                 clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
+                render={(renderProps) => (
+                  <button onClick={renderProps.onClick} className="logout">
+                    Logout
+                  </button>
+                )}
                 buttonText="Logout"
                 onLogoutSuccess={logout}
               ></GoogleLogout>
