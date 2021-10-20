@@ -1,22 +1,51 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ProgressItemComponent } from './ProgressItem.styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-const ProgressItem = ({ anime, progress }) => {
+const ProgressItem = ({ anime, progress, setProgress }) => {
   //! USE-STATE
   const [isHovored, setIsHovored] = useState(false);
 
+  //! USE-REF
+  const hoverRef = useRef();
+
+  //! remove hover state *browser bug see on github
   useEffect(() => {
-    console.log('anime: ' + anime);
-    console.log('progress: ' + progress);
-  }, [anime, progress]);
+    if (isHovored) {
+      let interval = setInterval(() => {
+        if (
+          isHovored &&
+          hoverRef.current &&
+          hoverRef.current.matches(':hover') === false
+        ) {
+          setIsHovored(false);
+        }
+      }, 200);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
+
+  //! HANDLER
+  const handlerProgress = (state) => {
+    const id = anime?._id;
+    setProgress(state, id);
+  };
 
   return (
     <ProgressItemComponent
       onMouseEnter={() => setIsHovored(true)}
       onMouseLeave={() => setIsHovored(false)}
-      progress={Math.round(((progress + 1) / anime?.episodes?.length) * 100)}
+      progress={Math.round(
+        ((progress?.count + 1) / anime?.episodes?.length) * 100
+      )}
+      status={progress?.status}
+      ref={hoverRef}
     >
       {isHovored ? (
         <iframe
@@ -28,13 +57,19 @@ const ProgressItem = ({ anime, progress }) => {
         <>
           <img className="infoSource" src={anime?.thumnail} alt=""></img>
           <div className="progress">
-            <div className="progressCount">{progress + 1}</div>
+            <div className="progressCount">{progress?.count + 1}</div>
             <div className="currProgress">
               <span className="procent">
-                {Math.round(((progress + 1) / anime?.episodes?.length) * 100)}%
+                {Math.round(
+                  ((progress?.count + 1) / anime?.episodes?.length) * 100
+                )}
+                %
               </span>
             </div>
             <div className="progressCount">{anime?.episodes?.length}</div>
+          </div>
+          <div className="status">
+            <span>{progress?.status}</span>
           </div>
         </>
       )}
@@ -49,7 +84,7 @@ const ProgressItem = ({ anime, progress }) => {
             <span>{anime?.episodes.length} Folgen</span>
           </div>
           <div className="itemDescription">
-            {anime?.description.slice(0, 80)}...
+            {anime?.description.slice(0, 50)}...
           </div>
           <div className="itemGenre">
             {anime?.genres?.map((genre) => {
@@ -58,6 +93,41 @@ const ProgressItem = ({ anime, progress }) => {
           </div>
         </div>
       </Link>
+      <div className="stateOfAnime">
+        <div className="container">
+          <button
+            onClick={() => handlerProgress('deleted')}
+            className="changeProgress delete"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+          <div className="hoverText">
+            <span>Delete</span>
+          </div>
+        </div>
+        <div className="container">
+          <button
+            onClick={() => handlerProgress('canceled')}
+            className="changeProgress cancel"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          <div className="hoverText">
+            <span>Cancel</span>
+          </div>
+        </div>
+        <div className="container">
+          <button
+            onClick={() => handlerProgress('completed')}
+            className="changeProgress completed"
+          >
+            <FontAwesomeIcon icon={faCheck} />
+          </button>
+          <div className="hoverText">
+            <span>Completed</span>
+          </div>
+        </div>
+      </div>
     </ProgressItemComponent>
   );
 };

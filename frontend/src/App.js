@@ -41,6 +41,7 @@ const App = () => {
         logout();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, history]);
 
   return (

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { FeaturedComponent } from './Featured.styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +20,7 @@ function Featured({ user }) {
       }
     };
     animeList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

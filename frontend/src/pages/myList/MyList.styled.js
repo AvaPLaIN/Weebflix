@@ -6,6 +6,7 @@ export const MyListComponent = styled.div`
   position: relative;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -20,12 +21,35 @@ export const MyListComponent = styled.div`
     filter: blur(1rem);
   }
 
+  .filter {
+    position: absolute;
+    top: 6rem;
+    right: 15rem;
+    z-index: 999;
+    color: white;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    select {
+      appearance: none;
+      outline: none;
+      border: 0;
+      box-shadow: none;
+      background-color: var(--main-color-hex);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+    }
+  }
+
   .list {
     z-index: 800;
     overflow-y: scroll;
-    height: 90vh;
+    height: 85vh;
     width: 100vw;
-    margin-top: 5rem;
+    margin-top: 10rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
     justify-items: center;

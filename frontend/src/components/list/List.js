@@ -28,7 +28,8 @@ function List({ genre, user }) {
       }
     };
     animeList();
-  }, [genre]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleMoveList = (direction) => {
     let distance = listRef.current.getBoundingClientRect().x;

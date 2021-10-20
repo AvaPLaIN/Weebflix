@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PlayerComponent } from './Player.styled';
 import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,9 +14,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { updateProgress } from '../../api/anime';
 
 function Player({ user, setUser }) {
+  //! INIT
   const location = useLocation();
   const anime = location.anime;
 
+  //! REF
+  const video = useRef();
+
+  //! CUSTOM FUNCTIONS
   const selectEpisode = () => {
     const index = user?.data?.result?.progress.findIndex(
       (prog) => prog.id === anime._id
@@ -28,6 +33,12 @@ function Player({ user, setUser }) {
     }
   };
 
+  const updateUser = async (newUser) => {
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    updateProgress(user);
+  };
+
   //! USE-STATE
   const [episode, setEpisode] = useState();
   const [currEpisodeIndex, setCurrEpisodeIndex] = useState(selectEpisode);
@@ -35,14 +46,12 @@ function Player({ user, setUser }) {
 
   //! USE-EFFECT
   useEffect(() => {
-    location.anime && setEpisode(location.anime.episodes[0]);
-  }, [location.anime]);
-
-  const updateUser = async (newUser) => {
-    setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    updateProgress(user);
-  };
+    setEpisode(anime?.episodes[currEpisodeIndex]);
+    setTimeout(() => {
+      video?.current?.setAttribute('sandbox', '');
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setIsEpisodeOpen(false);
@@ -51,21 +60,32 @@ function Player({ user, setUser }) {
     );
 
     if (index >= 0) {
+      let status = '';
+      currEpisodeIndex >= anime?.episodes?.length - 1
+        ? (status = 'completed')
+        : (status = 'currently Watching');
       user?.data?.result?.progress.splice(index, 1, {
         id: anime._id,
         count: currEpisodeIndex,
+        status: status,
       });
     } else {
       user?.data?.result?.progress.push({
         id: anime._id,
         count: 0,
+        status: 'currently Watching',
       });
     }
     updateUser(user);
+    setTimeout(() => {
+      video?.current?.setAttribute('sandbox', '');
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode]);
 
   //! HANDLER
   const handleSetEpisode = (index, status) => {
+    video?.current?.removeAttribute('sandbox');
     if (status === 'skip') {
       if (
         currEpisodeIndex + index >= 0 &&
@@ -131,13 +151,13 @@ function Player({ user, setUser }) {
             </div>
           </div>
           <iframe
-            sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
             frameBorder="0"
             allow="autoplay"
             autoPlay="1"
             allowFullScreen
             title="Player"
             src={episode}
+            ref={video}
           ></iframe>
         </PlayerComponent>
       )}

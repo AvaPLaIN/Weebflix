@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const ProgressItemComponent = styled.div`
   height: 35rem;
   width: 30rem;
-  overflow: hidden;
   background-color: rgba(var(--main-color-rgb), 0.9);
   border-radius: 2rem;
   color: white;
@@ -19,6 +18,7 @@ export const ProgressItemComponent = styled.div`
     height: 15rem;
     object-fit: cover;
     border: none;
+    border-radius: 2rem;
   }
 
   .progress {
@@ -36,6 +36,14 @@ export const ProgressItemComponent = styled.div`
       align-items: center;
       justify-content: center;
       padding: 1rem;
+
+      &:nth-child(1) {
+        border-top-left-radius: 2rem;
+      }
+
+      &:nth-child(3) {
+        border-top-right-radius: 2rem;
+      }
     }
 
     .currProgress {
@@ -63,6 +71,21 @@ export const ProgressItemComponent = styled.div`
         background-color: rgba(var(--main-color-rgb), 0.9);
       }
     }
+  }
+
+  .status {
+    position: absolute;
+    right: 0;
+    top: 12.1rem;
+    background-color: rgba(var(--main-color-rgb), 0.8);
+    padding: 0.5rem 1rem;
+    border-top-left-radius: 2rem;
+    color: ${(props) => {
+      const status = props.status;
+      if (status === 'currently Watching') return 'orange';
+      if (status === 'canceled') return 'red';
+      if (status === 'completed') return 'green';
+    }};
   }
 
   .playerLink {
@@ -102,5 +125,84 @@ export const ProgressItemComponent = styled.div`
 
   &:hover {
     transform: scale(1.1);
+
+    .stateOfAnime {
+      display: flex;
+    }
+  }
+
+  .stateOfAnime {
+    width: 100%;
+    border-top: 1px solid white;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+
+    .container {
+      position: relative;
+      width: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .changeProgress {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        height: 3rem;
+        cursor: pointer;
+
+        &.delete {
+          color: #610f0f;
+        }
+
+        &.cancel {
+          color: #865d0f;
+        }
+
+        &.completed {
+          color: #0f4e0f;
+        }
+      }
+
+      .hoverText {
+        display: none;
+        position: absolute;
+        top: 100%;
+      }
+
+      &:hover {
+        .hoverText {
+          display: flex;
+          position: absolute;
+          top: 105%;
+          padding: 0.2rem 1rem;
+          background-color: black;
+          border-radius: 2rem;
+        }
+
+        .changeProgress {
+          transform: scale(1.2);
+        }
+
+        .delete {
+          color: red;
+        }
+
+        .cancel {
+          color: orange;
+        }
+
+        .completed {
+          color: green;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .stateOfAnime {
+      display: flex;
+    }
   }
 `;

@@ -137,7 +137,7 @@ export const NavbarComponent = styled.div`
 
           /*------ ADDED CSS ---------*/
           .slider:after {
-            content: 'ENG';
+            content: 'SUB';
             color: white;
             display: block;
             position: absolute;
@@ -149,7 +149,7 @@ export const NavbarComponent = styled.div`
           }
 
           input:checked + .slider:after {
-            content: 'DE';
+            content: 'DUB';
           }
 
           .logout {
