@@ -3,7 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ProgressItemComponent } from './ProgressItem.styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faTimes,
+  faCheck,
+  faArrowRight,
+} from '@fortawesome/free-solid-svg-icons';
 
 const ProgressItem = ({ anime, progress, setProgress }) => {
   //! USE-STATE
@@ -114,6 +119,17 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
           </button>
           <div className="hoverText">
             <span>Cancel</span>
+          </div>
+        </div>
+        <div className="container">
+          <button
+            onClick={() => handlerProgress('currently Watching')}
+            className="changeProgress currently"
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
+          <div className="hoverText">
+            <span>Continue</span>
           </div>
         </div>
         <div className="container">

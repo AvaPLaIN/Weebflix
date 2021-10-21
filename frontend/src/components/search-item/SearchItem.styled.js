@@ -17,7 +17,6 @@ export const SearchItemComponent = styled.div`
     width: 100%;
     height: 15rem;
     object-fit: cover;
-    pointer-events: none;
     border: none;
   }
 

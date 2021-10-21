@@ -163,6 +163,10 @@ export const ProgressItemComponent = styled.div`
         &.completed {
           color: #0f4e0f;
         }
+
+        &.currently {
+          color: #455c14;
+        }
       }
 
       .hoverText {
@@ -195,6 +199,10 @@ export const ProgressItemComponent = styled.div`
 
         .completed {
           color: green;
+        }
+
+        .currently {
+          color: #d0fb0e;
         }
       }
     }

@@ -49,7 +49,7 @@ function Player({ user, setUser }) {
     setEpisode(anime?.episodes[currEpisodeIndex]);
     setTimeout(() => {
       video?.current?.setAttribute('sandbox', '');
-    }, 1000);
+    }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,7 +79,7 @@ function Player({ user, setUser }) {
     updateUser(user);
     setTimeout(() => {
       video?.current?.setAttribute('sandbox', '');
-    }, 1000);
+    }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode]);
 
