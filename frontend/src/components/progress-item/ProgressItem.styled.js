@@ -12,7 +12,6 @@ export const ProgressItemComponent = styled.div`
   -webkit-box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   position: relative;
-  overflow: hidden;
 
   .infoSource {
     width: 100%;
