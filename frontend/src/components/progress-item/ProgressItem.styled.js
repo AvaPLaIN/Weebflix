@@ -12,6 +12,7 @@ export const ProgressItemComponent = styled.div`
   -webkit-box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   position: relative;
+  overflow: hidden;
 
   .infoSource {
     width: 100%;
@@ -88,8 +89,31 @@ export const ProgressItemComponent = styled.div`
     }};
   }
 
+  .rating {
+    position: absolute;
+    display: flex;
+    gap: 0.5rem;
+    left: 0;
+    top: 12.1rem;
+    background-color: rgba(var(--main-color-rgb), 0.8);
+    padding: 0.5rem 1rem;
+    border-top-right-radius: 2rem;
+    font-weight: bold;
+    color: ${(props) => {
+      const rating = props.rating;
+      const number = parseInt(rating, 10);
+      if (number > 8) return 'green';
+      if (number > 6) return 'orange';
+      if (number > 5) return 'yellow';
+      if (number > 3) return 'orange';
+      if (number > 1) return 'red';
+      if (number === 1) return 'white';
+    }};
+  }
+
   .playerLink {
-    height: 100%;
+    height: 50%;
+    //overflow: hidden;
   }
 
   .infos {
@@ -128,6 +152,10 @@ export const ProgressItemComponent = styled.div`
 
     .stateOfAnime {
       display: flex;
+    }
+
+    .playerLink {
+      overflow: hidden;
     }
   }
 
@@ -211,6 +239,10 @@ export const ProgressItemComponent = styled.div`
   @media (max-width: 1200px) {
     .stateOfAnime {
       display: flex;
+    }
+
+    .playerLink {
+      overflow: hidden;
     }
   }
 `;

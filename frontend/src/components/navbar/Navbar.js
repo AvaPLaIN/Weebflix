@@ -30,8 +30,8 @@ function Navbar({ user, setUser, logout }) {
             <Link to="/home">Startseite</Link>
             <Link to="/home">Animes</Link>
             <Link to="/home">Filme</Link>
-            <Link to="/home">Mangas</Link>
             <Link to="/home">Neu und beliebt</Link>
+            <Link to="/rating">Rating</Link>
             <Link to="/mylist">Meine Liste</Link>
           </ul>
         </div>
@@ -60,6 +60,7 @@ function Navbar({ user, setUser, logout }) {
             />
             <div className="options">
               <span>{user?.data?.result?.name || user?.profileObj?.name}</span>
+              <Link to="/rating">Rating</Link>
               <Link to="/mylist">Meine Liste</Link>
               <label className="switch">
                 <input type="checkbox" id="togBtn" />

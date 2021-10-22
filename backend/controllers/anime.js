@@ -95,7 +95,7 @@ const updateProgress = async (req, res) => {
   const { progress, email } = req?.body?.data?.result;
 
   try {
-    const user = await User.update(
+    const user = await User.updateOne(
       {
         email: email,
       },

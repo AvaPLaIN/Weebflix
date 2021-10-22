@@ -5,6 +5,7 @@ import Player from './pages/player/Player';
 import Search from './pages/search/Search';
 import Auth from './pages/auth/Auth';
 import MyList from './pages/myList/MyList';
+import Rating from './pages/rating/Rating';
 import decode from 'jwt-decode';
 //import { isTokenValid } from './api/user';
 
@@ -78,6 +79,16 @@ const App = () => {
         render={() =>
           requireAuth() ? (
             <MyList user={user} setUser={setUser} logout={logout} />
+          ) : (
+            <Redirect to="/" />
+          )
+        }
+      />
+      <Route
+        path="/rating"
+        render={() =>
+          requireAuth() ? (
+            <Rating user={user} setUser={setUser} logout={logout} />
           ) : (
             <Redirect to="/" />
           )

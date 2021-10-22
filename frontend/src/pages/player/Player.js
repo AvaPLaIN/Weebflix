@@ -68,12 +68,14 @@ function Player({ user, setUser }) {
         id: anime._id,
         count: currEpisodeIndex,
         status: status,
+        rating: user?.data?.result?.progress[index]?.rating,
       });
     } else {
       user?.data?.result?.progress.push({
         id: anime._id,
         count: 0,
         status: 'currently Watching',
+        rating: '-',
       });
     }
     updateUser(user);

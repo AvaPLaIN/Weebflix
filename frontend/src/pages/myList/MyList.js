@@ -55,7 +55,12 @@ const MyList = ({ user, setUser, logout }) => {
       const anime = animeList?.find((anime) => anime?._id === id);
       progress[index].count = anime?.episodes?.length - 1;
     }
-    setProgress(progress);
+    const newUser = user;
+    newUser.data.result.progress = progress;
+
+    updateProgress(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    setUser(newUser);
   };
 
   return (

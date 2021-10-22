@@ -8,6 +8,7 @@ import {
   faTimes,
   faCheck,
   faArrowRight,
+  faStar,
 } from '@fortawesome/free-solid-svg-icons';
 
 const ProgressItem = ({ anime, progress, setProgress }) => {
@@ -50,6 +51,7 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
         ((progress?.count + 1) / anime?.episodes?.length) * 100
       )}
       status={progress?.status}
+      rating={progress?.rating}
       ref={hoverRef}
     >
       {isHovored ? (
@@ -75,6 +77,10 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
           </div>
           <div className="status">
             <span>{progress?.status}</span>
+          </div>
+          <div className="rating">
+            <span>{progress?.rating}</span>
+            <FontAwesomeIcon icon={faStar} />
           </div>
         </>
       )}
