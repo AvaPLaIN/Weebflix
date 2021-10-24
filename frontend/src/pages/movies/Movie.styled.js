@@ -98,6 +98,8 @@ export const MovieComponent = styled.div`
   .list {
     z-index: 800;
     width: 100vw;
+    height: 85vh;
+    overflow-y: scroll;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(1fr, 1fr));
     justify-items: center;
