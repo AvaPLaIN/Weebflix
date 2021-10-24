@@ -100,6 +100,9 @@ function Navbar({ user, setUser, logout }) {
         </button>
         <div className="container">
           <h1>Weebflix</h1>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/home">
+            Home
+          </Link>
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/movies">
             Filme
           </Link>

@@ -262,6 +262,7 @@ export const NavbarComponent = styled.div`
         align-items: center;
         gap: 5rem;
         font-size: 3rem;
+        text-transform: uppercase;
 
         h1 {
           font-size: 4rem;
