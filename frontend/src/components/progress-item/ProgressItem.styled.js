@@ -236,6 +236,10 @@ export const ProgressItemComponent = styled.div`
   }
 
   @media (max-width: 1200px) {
+    &:hover {
+      transform: scale(1);
+    }
+
     .stateOfAnime {
       display: flex;
     }

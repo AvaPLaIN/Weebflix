@@ -18,6 +18,7 @@ const RatingItem = ({ anime, progress, setRating }) => {
   useEffect(() => {
     const number = parseInt(progress?.rating, 10);
     number > 0 ? setCurrRating([...Array(number)]) : setCurrRating([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -45,6 +46,7 @@ const RatingItem = ({ anime, progress, setRating }) => {
           <div className="setRating">
             <div className="rate">
               <select
+                value={progress?.rating}
                 onChange={(e) => handlerChangeRating(e.target.value, anime._id)}
               >
                 <option value="0">Rate</option>

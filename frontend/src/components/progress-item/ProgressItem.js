@@ -54,7 +54,7 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
       rating={progress?.rating}
       ref={hoverRef}
     >
-      {isHovored ? (
+      {isHovored && window.innerWidth > 1200 ? (
         <iframe
           className="infoSource"
           src={anime?.trailer + '&controls=0&showinfo=0'}

@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 
 //! IMPORT ROUTES
 const animeRoute = require('./routes/animes');
+const movieRoute = require('./routes/movies');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 
@@ -23,6 +24,7 @@ app.use(cors({ origin: '*' }));
 app.use('/api/animes', animeRoute);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/movies', movieRoute);
 
 //! MONGO_DB
 const uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.m0luj.mongodb.net/weebflix?retryWrites=true&w=majority`;

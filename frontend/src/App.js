@@ -6,6 +6,8 @@ import Search from './pages/search/Search';
 import Auth from './pages/auth/Auth';
 import MyList from './pages/myList/MyList';
 import Rating from './pages/rating/Rating';
+import Movie from './pages/movies/Movie';
+import MoviePlayer from './pages/movie-player/MoviePlayer';
 import decode from 'jwt-decode';
 //import { isTokenValid } from './api/user';
 
@@ -75,6 +77,10 @@ const App = () => {
         }
       />
       <Route
+        path="/moviePlayer"
+        render={() => (requireAuth() ? <MoviePlayer /> : <Redirect to="/" />)}
+      />
+      <Route
         path="/mylist"
         render={() =>
           requireAuth() ? (
@@ -89,6 +95,16 @@ const App = () => {
         render={() =>
           requireAuth() ? (
             <Rating user={user} setUser={setUser} logout={logout} />
+          ) : (
+            <Redirect to="/" />
+          )
+        }
+      />
+      <Route
+        path="/movies"
+        render={() =>
+          requireAuth() ? (
+            <Movie user={user} setUser={setUser} logout={logout} />
           ) : (
             <Redirect to="/" />
           )

@@ -58,4 +58,10 @@ export const SearchItemComponent = styled.div`
   &:hover {
     transform: scale(1.1);
   }
+
+  @media (max-width: 1200px) {
+    &:hover {
+      transform: scale(1);
+    }
+  }
 `;

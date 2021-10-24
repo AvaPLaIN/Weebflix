@@ -139,7 +139,7 @@ function Player({ user, setUser }) {
               <input className="searchInput" type="text" />
             </div>
             <div className="episodes">
-              {anime?.episodes.map((episode, index) => {
+              {anime?.episodes?.map((episode, index) => {
                 return (
                   <div
                     onClick={() => handleSetEpisode(index)}

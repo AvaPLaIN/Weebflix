@@ -43,14 +43,7 @@ function ListItem({ anime }) {
         onMouseEnter={() => setIsItemHovored(true)}
         onMouseLeave={() => setIsItemHovored(false)}
       >
-        {!isItemHovored ? (
-          <>
-            <Link to={{ pathname: '/player', anime: anime }}>
-              <img src={anime?.thumnail} alt="banner" />
-              <h3 className="thumnailTitle">{anime?.title}</h3>
-            </Link>
-          </>
-        ) : (
+        {isItemHovored && window.innerWidth > 1200 ? (
           <>
             <iframe
               title="trailer"
@@ -95,6 +88,13 @@ function ListItem({ anime }) {
                   })}
                 </div>
               </div>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to={{ pathname: '/player', anime: anime }}>
+              <img src={anime?.thumnail} alt="banner" />
+              <h3 className="thumnailTitle">{anime?.title}</h3>
             </Link>
           </>
         )}

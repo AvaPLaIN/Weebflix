@@ -29,8 +29,8 @@ function Navbar({ user, setUser, logout }) {
           <ul>
             <Link to="/home">Startseite</Link>
             <Link to="/home">Animes</Link>
-            <Link to="/home">Filme</Link>
             <Link to="/home">Neu und beliebt</Link>
+            <Link to="/movies">Filme</Link>
             <Link to="/rating">Rating</Link>
             <Link to="/mylist">Meine Liste</Link>
           </ul>
@@ -60,6 +60,7 @@ function Navbar({ user, setUser, logout }) {
             />
             <div className="options">
               <span>{user?.data?.result?.name || user?.profileObj?.name}</span>
+              <Link to="/movies">Filme</Link>
               <Link to="/rating">Rating</Link>
               <Link to="/mylist">Meine Liste</Link>
               <label className="switch">

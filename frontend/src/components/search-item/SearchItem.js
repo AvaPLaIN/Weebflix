@@ -12,7 +12,7 @@ function SearchItem({ anime }) {
       onMouseEnter={() => setIsHovored(true)}
       onMouseLeave={() => setIsHovored(false)}
     >
-      {isHovored ? (
+      {isHovored && window.innerWidth > 1200 ? (
         <iframe
           className="infoSource"
           src={anime?.trailer + '&controls=0&showinfo=0'}

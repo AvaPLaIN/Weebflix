@@ -109,6 +109,7 @@ const MyList = ({ user, setUser, logout }) => {
                 />
               );
             }
+            return null;
           })}
         </div>
       </MyListComponent>
