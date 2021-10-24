@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 const Movie = ({ user, setUser, logout }) => {
   //! USE-STATE
   const [movies, setMovies] = useState();
+  const [isSmooth, setIsSmooth] = useState(false);
 
   //! USE-EFFECT
   useEffect(() => {
@@ -23,6 +24,11 @@ const Movie = ({ user, setUser, logout }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //! HANDLER
+  const handlerSmooth = () => {
+    setIsSmooth((prev) => !prev);
+  };
+
   return (
     <>
       <Navbar user={user} setUser={setUser} logout={logout} />
@@ -32,9 +38,15 @@ const Movie = ({ user, setUser, logout }) => {
           src="https://terrigen-cdn-dev.marvel.com/content/prod/1x/a33.jpg"
           alt=""
         />
+        <div className="toggle">
+          <label className="switch">
+            <input onChange={handlerSmooth} type="checkbox" id="togBtn" />
+            <div className="slider round"></div>
+          </label>
+        </div>
         <div className="list">
           {movies?.map((movie) => (
-            <MovieList key={uuidv4()} movie={movie} />
+            <MovieList isSmooth={isSmooth} key={uuidv4()} movie={movie} />
           ))}
         </div>
       </MovieComponent>

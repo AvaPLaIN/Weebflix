@@ -61,7 +61,7 @@ export const PlayerComponent = styled.div`
     left: 70%;
     margin: auto;
     background-color: rgba(var(--main-color-rgb), 0.7);
-    z-index: 99;
+    z-index: 980;
     height: 5rem;
     width: 5rem;
     padding: 1rem;
@@ -151,6 +151,7 @@ export const PlayerComponent = styled.div`
       flex-direction: column;
       gap: 0.2rem;
       overflow-y: scroll;
+      z-index: 980;
 
       .episode {
         width: 100%;

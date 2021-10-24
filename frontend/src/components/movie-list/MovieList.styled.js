@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const MovieListComponent = styled.div`
-  height: 15rem;
+  height: ${(props) => (props.isSmooth ? props.items * 8 + 15 : '15')}rem;
   overflow: hidden;
   width: clamp(300px, 100%, 900px);
   position: relative;
@@ -49,5 +49,21 @@ export const MovieListComponent = styled.div`
 
   &:hover {
     height: ${(props) => props.items * 8 + 15}rem;
+  }
+
+  @media (max-width: 1200px) {
+    .movieBanner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        display: none;
+      }
+
+      p {
+        display: none;
+      }
+    }
   }
 `;

@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 
-const MovieList = ({ movie }) => {
+const MovieList = ({ movie, isSmooth }) => {
   return (
-    <MovieListComponent items={movie?.movies?.length}>
+    <MovieListComponent isSmooth={isSmooth} items={movie?.movies?.length}>
       <img className="listBanner" src={movie?.banner} alt="" />
       <div className="movieBanner">
         <FontAwesomeIcon icon={faArrowDown} />

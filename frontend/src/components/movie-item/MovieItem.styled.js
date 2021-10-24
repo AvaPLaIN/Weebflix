@@ -6,6 +6,7 @@ export const MovieItemComponent = styled.div`
   width: 100%;
   border-radius: 2rem;
   display: flex;
+  gap: 1rem;
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
@@ -27,5 +28,16 @@ export const MovieItemComponent = styled.div`
 
   &:hover {
     transform: scale(1.1);
+  }
+
+  @media (max-width: 1200px) {
+    .details {
+      display: none;
+    }
+
+    h2 {
+      flex: 1;
+      padding-right: 2rem;
+    }
   }
 `;

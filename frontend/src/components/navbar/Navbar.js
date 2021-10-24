@@ -6,6 +6,8 @@ import {
   faSearch,
   faBell,
   faCaretDown,
+  faBars,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../assets/weebflix.png';
 import { GoogleLogout } from 'react-google-login';
@@ -13,6 +15,7 @@ import { GoogleLogout } from 'react-google-login';
 function Navbar({ user, setUser, logout }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset ? true : false);
@@ -20,7 +23,10 @@ function Navbar({ user, setUser, logout }) {
   };
 
   return (
-    <NavbarComponent isScrolled={isScrolled}>
+    <NavbarComponent
+      isScrolled={isScrolled}
+      isMobileMenuOpen={isMobileMenuOpen}
+    >
       <div className="container">
         <div className="left">
           <Link to="/home">
@@ -80,6 +86,40 @@ function Navbar({ user, setUser, logout }) {
               ></GoogleLogout>
             </div>
           </div>
+          <div className="mobileBar" onClick={() => setIsMobileMenuOpen(true)}>
+            <FontAwesomeIcon icon={faBars} />
+          </div>
+        </div>
+      </div>
+      <div className="mobileMenu">
+        <button
+          className="closeMobileMenuBtn"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+        <div className="container">
+          <h1>Weebflix</h1>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/movies">
+            Filme
+          </Link>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/rating">
+            Rating
+          </Link>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/mylist">
+            Meine Liste
+          </Link>
+          <GoogleLogout
+            onClick={() => setIsMobileMenuOpen(false)}
+            clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <button onClick={renderProps.onClick} className="logoutMobile">
+                Logout
+              </button>
+            )}
+            buttonText="Logout"
+            onLogoutSuccess={logout}
+          ></GoogleLogout>
         </div>
       </div>
     </NavbarComponent>

@@ -25,7 +25,7 @@ export const MyListComponent = styled.div`
     position: absolute;
     top: 6rem;
     right: 15rem;
-    z-index: 999;
+    z-index: 990;
     color: white;
     font-size: 1.6rem;
     display: flex;
