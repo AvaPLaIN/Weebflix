@@ -33,18 +33,17 @@ function Navbar({ user, setUser, logout }) {
             <img src={logo} alt="logo" />
           </Link>
           <ul>
-            <Link to="/home">Startseite</Link>
+            <Link to="/home">Homepage</Link>
             <Link to="/home">Animes</Link>
-            <Link to="/home">Neu und beliebt</Link>
-            <Link to="/movies">Filme</Link>
+            <Link to="/movies">Movies</Link>
             <Link to="/rating">Rating</Link>
-            <Link to="/mylist">Meine Liste</Link>
+            <Link to="/mylist">My List</Link>
           </ul>
         </div>
         <div className="right">
           <Link to="/search" className="linkSearch">
             <FontAwesomeIcon icon={faSearch} />
-            <span>Suchen</span>
+            <span>Search</span>
           </Link>
           <FontAwesomeIcon icon={faBell} className="news" />
           <div
@@ -66,14 +65,14 @@ function Navbar({ user, setUser, logout }) {
             />
             <div className="options">
               <span>{user?.data?.result?.name || user?.profileObj?.name}</span>
-              <Link to="/movies">Filme</Link>
+              <Link to="/movies">Movies</Link>
               <Link to="/rating">Rating</Link>
-              <Link to="/mylist">Meine Liste</Link>
+              <Link to="/mylist">My List</Link>
               <label className="switch">
                 <input type="checkbox" id="togBtn" />
                 <div className="slider round"></div>
               </label>
-              <span>Einstellungen</span>
+              <span>Settings</span>
               <GoogleLogout
                 clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
                 render={(renderProps) => (
@@ -104,13 +103,13 @@ function Navbar({ user, setUser, logout }) {
             Home
           </Link>
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/movies">
-            Filme
+            Movies
           </Link>
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/rating">
             Rating
           </Link>
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/mylist">
-            Meine Liste
+            My List
           </Link>
           <GoogleLogout
             onClick={() => setIsMobileMenuOpen(false)}

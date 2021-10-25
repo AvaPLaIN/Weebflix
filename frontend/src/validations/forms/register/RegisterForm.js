@@ -22,7 +22,7 @@ const RegisterForm = ({ setShowLogin }) => {
 
   return (
     <RegisterComponent>
-      <h1>Registrieren</h1>
+      <h1>Register</h1>
       <Formik
         initialValues={{
           name: '',

@@ -40,11 +40,11 @@ function Featured({ user }) {
         <div className="buttons">
           <button className="playBtn">
             <FontAwesomeIcon icon={faPlay} />
-            <Link to={{ pathname: '/player', anime: anime }}>Abspielen</Link>
+            <Link to={{ pathname: '/player', anime: anime }}>Play</Link>
           </button>
           <button className="infoBtn">
             <FontAwesomeIcon icon={faInfoCircle} />
-            <span>Weitere Infos</span>
+            <span>More...</span>
           </button>
         </div>
       </div>

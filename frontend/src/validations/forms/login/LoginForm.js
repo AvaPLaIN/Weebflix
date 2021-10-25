@@ -35,7 +35,7 @@ const LoginForm = ({ setUser, setShowLogin }) => {
 
   return (
     <LoginComponent>
-      <h1>Einloggen</h1>
+      <h1>Login</h1>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}

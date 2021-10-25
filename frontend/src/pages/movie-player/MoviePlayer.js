@@ -53,7 +53,7 @@ const MoviePlayer = () => {
     <MoviePlayerComponent>
       <Link to="/movies" className="backwards">
         <FontAwesomeIcon icon={faArrowLeft} />
-        <span>Zurück</span>
+        <span>Back</span>
       </Link>
       <h1>{movie?.title}</h1>
       <video ref={videoRef} src={movie?.src} controls autoPlay></video>

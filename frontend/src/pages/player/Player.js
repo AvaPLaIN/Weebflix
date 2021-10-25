@@ -113,7 +113,7 @@ function Player({ user, setUser }) {
         >
           <Link to="/" className="backwards">
             <FontAwesomeIcon icon={faArrowLeft} />
-            <span>Zurück</span>
+            <span>Back</span>
           </Link>
           <FontAwesomeIcon
             onClick={() => handleSetEpisode(-1, 'skip')}
