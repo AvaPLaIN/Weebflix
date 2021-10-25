@@ -84,20 +84,7 @@ const MyList = ({ user, setUser, logout }) => {
         </div>
         <div className="list">
           {progress?.map((progAnime) => {
-            if (filter !== 'all') {
-              if (progAnime?.status === filter) {
-                return (
-                  <ProgressItem
-                    key={uuidv4()}
-                    anime={animeList?.find(
-                      (anime) => anime?._id === progAnime?.id
-                    )}
-                    progress={progAnime}
-                    setProgress={handlerSetProgress}
-                  />
-                );
-              }
-            } else {
+            if (filter === 'all' || progAnime?.status === filter) {
               return (
                 <ProgressItem
                   key={uuidv4()}

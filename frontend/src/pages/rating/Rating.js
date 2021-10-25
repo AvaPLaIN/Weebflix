@@ -58,7 +58,20 @@ const Rating = ({ user, setUser, logout }) => {
         </div>
         <div className="list">
           {progress?.map((progAnime) => {
-            if (filter === 'all') {
+            if (
+              //! RENDER ALL
+              filter === 'all' ||
+              //! RENDER UNRATED COMPONENTS
+              (filter === 'unrated' &&
+                (progAnime?.rating === '0' || progAnime?.rating === '-')) ||
+              //! RENDER RATED COMPONENTS
+              (filter === 'rated' &&
+                progAnime?.rating !== '0' &&
+                progAnime?.rating !== '-') ||
+              //! RENDER TOP COMPONENTS
+              (filter === 'top' &&
+                (progAnime?.rating === '9' || progAnime?.rating === '10'))
+            ) {
               return (
                 <RatingItem
                   key={uuidv4()}
@@ -69,48 +82,8 @@ const Rating = ({ user, setUser, logout }) => {
                   setRating={changeRatingAnime}
                 />
               );
-            } else {
-              if (filter === 'unrated') {
-                if (progAnime?.rating === '0' || progAnime?.rating === '-') {
-                  return (
-                    <RatingItem
-                      key={uuidv4()}
-                      anime={animeList?.find(
-                        (anime) => anime?._id === progAnime?.id
-                      )}
-                      progress={progAnime}
-                      setRating={changeRatingAnime}
-                    />
-                  );
-                }
-              } else if (filter === 'rated') {
-                if (progAnime?.rating !== '0' && progAnime?.rating !== '-') {
-                  return (
-                    <RatingItem
-                      key={uuidv4()}
-                      anime={animeList?.find(
-                        (anime) => anime?._id === progAnime?.id
-                      )}
-                      progress={progAnime}
-                      setRating={changeRatingAnime}
-                    />
-                  );
-                }
-              } else {
-                if (progAnime?.rating === '9' || progAnime?.rating === '10') {
-                  return (
-                    <RatingItem
-                      key={uuidv4()}
-                      anime={animeList?.find(
-                        (anime) => anime?._id === progAnime?.id
-                      )}
-                      progress={progAnime}
-                      setRating={changeRatingAnime}
-                    />
-                  );
-                }
-              }
             }
+            return null;
           })}
         </div>
       </RatingComponent>
