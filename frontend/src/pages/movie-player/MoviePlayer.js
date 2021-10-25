@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,9 +12,6 @@ const MoviePlayer = () => {
 
   //! USE-REF
   const videoRef = useRef();
-
-  //! USE-STATE
-  const [movieProgress, setMovieProgress] = useState();
 
   //! USE-EFFECT
   useEffect(() => {
