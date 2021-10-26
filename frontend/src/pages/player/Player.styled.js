@@ -11,6 +11,16 @@ export const PlayerComponent = styled.div`
   align-items: center;
   justify-content: center;
 
+  iframe {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -100 !important;
+    pointer-events: none !important;
+  }
+
   .backwards {
     position: absolute;
     top: 2rem;
@@ -170,14 +180,16 @@ export const PlayerComponent = styled.div`
     }
   }
 
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    border: none;
-    object-fit: cover;
+  .videoSource {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vw !important;
+    max-height: 100vh !important;
+    border: none !important;
+    object-fit: cover !important;
+    pointer-events: all !important;
+    z-index: 1 !important;
   }
 `;

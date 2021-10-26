@@ -156,6 +156,7 @@ function Player({ user, setUser }) {
             </div>
           </div>
           <iframe
+            className="videoSource"
             frameBorder="0"
             allow="autoplay"
             autoPlay="1"
