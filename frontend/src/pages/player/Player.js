@@ -80,7 +80,10 @@ function Player({ user, setUser }) {
     }
     updateUser(user);
     setTimeout(() => {
-      video?.current?.setAttribute('sandbox', '');
+      video?.current?.setAttribute(
+        'sandbox',
+        'allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation'
+      );
     }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode]);
