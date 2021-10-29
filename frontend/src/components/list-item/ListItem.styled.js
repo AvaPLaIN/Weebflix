@@ -7,7 +7,6 @@ export const ListItemComponent = styled.div`
   transition-delay: ${(props) => (props.isHovored ? '0s' : '0.5s')};
   background-color: #2c2a2a;
   cursor: pointer;
-  z-index: 970;
 
   .hoverOpenState {
     height: 100%;
