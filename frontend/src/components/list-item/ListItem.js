@@ -1,32 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import { ListItemComponent } from './ListItem.styled';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlay,
-  faPlus,
-  faThumbsUp,
-  faThumbsDown,
-} from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 
 function ListItem({ anime }) {
   //! USE-STATE
-  const [isItemHovored, setIsItemHovored] = useState(false);
+  const [isHovored, setIsHovored] = useState(false);
+  const [inHovorEffect, setInHovorEffect] = useState(null);
 
   //! USE-REF
   const hoverRef = useRef();
 
   //! remove hover state *browser bug see on github
   useEffect(() => {
-    if (isItemHovored) {
+    if (isHovored) {
       let interval = setInterval(() => {
         if (
-          isItemHovored &&
+          isHovored &&
           hoverRef.current &&
           hoverRef.current.matches(':hover') === false
         ) {
-          setIsItemHovored(false);
+          setIsHovored(false);
         }
       }, 200);
       return () => {
@@ -36,70 +30,78 @@ function ListItem({ anime }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
+  //! HANDLER
+  const handlerOnMouseEnter = () => {
+    setInHovorEffect(
+      setTimeout(() => {
+        setIsHovored(true);
+      }, 700)
+    );
+  };
+
+  const handlerOnMouseLeave = () => {
+    clearTimeout(inHovorEffect);
+    const clearHovor = setTimeout(() => {
+      setIsHovored(false);
+    }, 800);
+    return () => clearTimeout(clearHovor);
+  };
+
   return (
-    <div style={{ position: 'relative', height: '10.2rem', width: '22.5rem' }}>
-      <ListItemComponent
-        ref={hoverRef}
-        onMouseEnter={() => setIsItemHovored(true)}
-        onMouseLeave={() => setIsItemHovored(false)}
-      >
-        {isItemHovored && window.innerWidth > 1200 ? (
-          <>
-            <iframe
-              title="trailer"
-              frameborder="0"
-              scrolling="no"
-              marginHeight="0"
-              marginWidth="0"
-              type="text/html"
-              allow="autoPlay"
-              src={anime?.trailer + '&controls=0&showinfo=0'}
-            ></iframe>
-            <Link to={{ pathname: '/player', anime: anime }}>
-              <div className="itemInfo">
-                <div className="icons">
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faPlay} />
-                  </div>
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faPlus} />
-                  </div>
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faThumbsUp} />
-                  </div>
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faThumbsDown} />
-                  </div>
-                </div>
-                <div className="itemTitle">
-                  <span>{anime?.title}</span>
-                </div>
-                <div className="infoTop">
-                  <span>{anime?.released}</span>
-                  <span>{anime?.status}</span>
-                  <span>{anime?.episodes?.length} Folgen</span>
-                </div>
-                <div className="itemDescription">
-                  {anime?.description?.slice(0, 140)}...
-                </div>
-                <div className="itemGenre">
-                  {anime?.genres?.map((genre) => {
-                    return <span key={uuidv4()}>{genre}</span>;
-                  })}
-                </div>
+    <ListItemComponent
+      ref={hoverRef}
+      onMouseEnter={() => handlerOnMouseEnter(true)}
+      onMouseLeave={() => handlerOnMouseLeave(false)}
+      isHovored={isHovored}
+    >
+      {isHovored && window.innerWidth > 1200 ? (
+        <div className="hoverOpenState">
+          <div className="thumnail">
+            <iframe title="trailer" src={anime?.trailer} />
+          </div>
+          <Link
+            className="hovorLink"
+            to={{ pathname: '/player', anime: anime }}
+          >
+            <div className="details">
+              <div className="title">
+                <span>{anime?.title}</span>
               </div>
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link to={{ pathname: '/player', anime: anime }}>
-              <img src={anime?.thumnail} alt="banner" />
-              <h3 className="thumnailTitle">{anime?.title}</h3>
-            </Link>
-          </>
-        )}
-      </ListItemComponent>
-    </div>
+              <div className="info">
+                <span>{anime?.released}</span>
+                <span>{anime?.status}</span>
+                <span>{anime?.episodes?.length} Folgen</span>
+              </div>
+              <div className="description">
+                <span>
+                  {anime?.description?.slice(0, 140)}
+                  {anime?.description?.length > 140 && '...'}
+                </span>
+              </div>
+              <div className="genre">
+                {anime?.genres?.map((genre) => {
+                  return <span key={uuidv4()}>{genre}</span>;
+                })}
+              </div>
+            </div>
+          </Link>
+          <img className="backgroundThumnail" src={anime?.thumnail} alt="" />
+        </div>
+      ) : (
+        <div className="hoverCloseState">
+          <Link
+            className="ThumnailLink"
+            to={{ pathname: '/player', anime: anime }}
+          >
+            <img src={anime?.thumnail} alt="" />
+          </Link>
+          <h2 className="thumnailTitle">
+            {anime?.title?.slice(0, 40)}
+            {anime?.title?.length > 40 && '...'}
+          </h2>
+        </div>
+      )}
+    </ListItemComponent>
   );
 }
 

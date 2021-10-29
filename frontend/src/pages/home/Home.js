@@ -43,9 +43,11 @@ function Home({ user, setUser, logout }) {
     <HomeComponent>
       <Navbar user={user} setUser={setUser} logout={logout} />
       <Featured user={user} />
-      {randomGenres.map((genre) => {
-        return <List user={user} key={genre} genre={genre} />;
-      })}
+      <div className="lists">
+        {randomGenres.map((genre) => {
+          return <List user={user} key={genre} genre={genre} />;
+        })}
+      </div>
     </HomeComponent>
   );
 }

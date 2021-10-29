@@ -1,105 +1,140 @@
 import styled from 'styled-components';
 
 export const ListItemComponent = styled.div`
-  position: relative;
-  width: 22.5rem;
-  height: 10.2rem;
-  background-color: var(--main-color-hex);
+  height: 18rem;
+  width: 23rem;
+  transition: all 0.3s ease-in-out;
+  transition-delay: ${(props) => (props.isHovored ? '0s' : '0.5s')};
+  background-color: #2c2a2a;
   cursor: pointer;
+  z-index: 970;
 
-  img {
-    width: 100%;
+  .hoverOpenState {
     height: 100%;
-    object-fit: cover;
-    background-position: center;
-  }
-
-  .infoHover {
-    display: none;
-  }
-
-  .thumnailTitle {
-    margin-top: 0.8rem;
     width: 100%;
-    text-align: center;
-    position: absolute;
-    color: white;
-  }
-
-  .itemInfo {
-    position: absolute;
-    display: none;
-    color: white;
-  }
-
-  &:hover {
-    position: absolute;
-    z-index: 900;
-    width: 32.5rem;
-    height: 35rem;
-    left: -5rem;
-    top: -18rem;
-    border-radius: 2rem;
     overflow: hidden;
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.07);
-    box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-direction: column;
+    position: relative;
 
-    iframe {
+    .thumnail {
       width: 100%;
-      height: 14rem;
+      min-height: 40%;
+      position: relative;
+
+      iframe {
+        border: none;
+        outline: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
 
-    .itemInfo {
+    .hovorLink {
+      background-color: rgba(0, 0, 0, 0.8);
+      height: 100%;
+      width: 100%;
+    }
+
+    .details {
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem 2rem;
-      width: 100%;
-      height: calc(100% - 15rem);
+      justify-content: space-around;
+      height: 100%;
+      gap: 0.4rem;
+      padding: 0.6rem;
 
-      .icons {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-        font-size: 1.4rem;
-
-        .icon {
-          border: 2px solid white;
-          height: 3rem;
-          width: 3rem;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      }
-
-      .itemTitle {
-        font-size: 1.6rem;
+      .title {
+        font-size: 0.9rem;
         font-weight: bold;
       }
 
-      .infoTop {
+      .info {
         width: 100%;
+        font-size: 0.8rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
 
-      .itemDescription {
-        font-size: 1.2rem;
+      .description {
+        font-size: 0.7rem;
       }
 
-      .itemGenre {
+      .genre {
         width: 100%;
+        font-size: 0.7rem;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
+        justify-content: space-around;
         gap: 1rem;
-        justify-content: space-between;
       }
+    }
+
+    .backgroundThumnail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+  }
+
+  .hoverCloseState {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+
+    .ThumnailLink {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      background-position: center;
+    }
+
+    h2 {
+      position: absolute;
+      top: 108%;
+      text-align: center;
+      transition: 0.2s ease-in;
+      transition-delay: 0.3s;
+    }
+  }
+
+  &:hover {
+    transform: scale(2, 2.3) translateY(-20%);
+    border-radius: 1rem;
+    z-index: 980;
+    ${(props) => props.isHovored && 'overflow: hidden;'}
+
+    .thumnailTitle {
+      color: transparent;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    &:hover {
+      transform: scale(1) translateY(0);
+      border-radius: 0;
     }
   }
 `;

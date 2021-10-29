@@ -40,20 +40,20 @@ function List({ genre, user }) {
       if (windowWidth > 1000) {
         distance -= windowWidth / 2;
       } else {
-        distance -= 280;
+        distance -= 285;
       }
     } else {
       if (windowWidth > 1000) {
         distance += windowWidth / 2;
       } else {
-        distance += 180;
+        distance += 185;
       }
     }
     //! CHECK OVERFLOW
     if (distance >= 0) {
       distance = 0;
-    } else if (-distance + windowWidth - 115 >= containerWidth) {
-      distance = -(containerWidth - windowWidth + 115);
+    } else if (-distance + windowWidth - 110 >= containerWidth) {
+      distance = -(containerWidth - windowWidth + 110);
     }
     if (containerWidth < windowWidth) {
       distance = 0;
