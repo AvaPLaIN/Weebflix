@@ -1,59 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
 import { ListItemComponent } from './ListItem.styled';
+import useHover from '../../hooks/useHover';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 function ListItem({ anime }) {
-  //! USE-STATE
-  const [isHovored, setIsHovored] = useState(false);
-  const [inHovorEffect, setInHovorEffect] = useState(null);
-
-  //! USE-REF
-  const hoverRef = useRef();
-
-  //! remove hover state *browser bug see on github
-  useEffect(() => {
-    if (isHovored) {
-      let interval = setInterval(() => {
-        if (
-          isHovored &&
-          hoverRef.current &&
-          hoverRef.current.matches(':hover') === false
-        ) {
-          setIsHovored(false);
-        }
-      }, 200);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
-
-  //! HANDLER
-  const handlerOnMouseEnter = () => {
-    setInHovorEffect(
-      setTimeout(() => {
-        setIsHovored(true);
-      }, 700)
-    );
-  };
-
-  const handlerOnMouseLeave = () => {
-    clearTimeout(inHovorEffect);
-    const clearHovor = setTimeout(() => {
-      setIsHovored(false);
-    }, 800);
-    return () => clearTimeout(clearHovor);
-  };
+  const [hovorRef, isHovored] = useHover();
 
   return (
-    <ListItemComponent
-      ref={hoverRef}
-      onMouseEnter={() => handlerOnMouseEnter(true)}
-      onMouseLeave={() => handlerOnMouseLeave(false)}
-      isHovored={isHovored}
-    >
+    <ListItemComponent ref={hovorRef} isHovored={isHovored}>
       {isHovored && window.innerWidth > 1200 ? (
         <div className="hoverOpenState">
           <div className="thumnail">

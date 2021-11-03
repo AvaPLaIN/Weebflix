@@ -73,7 +73,10 @@ function Navbar({ user, setUser, logout }) {
                 <div className="slider round"></div>
               </label>
               <span>Settings</span>
-              <GoogleLogout
+              <button onClick={logout} className="logout">
+                Logout
+              </button>
+              {/* <GoogleLogout
                 clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
                 render={(renderProps) => (
                   <button onClick={renderProps.onClick} className="logout">
@@ -82,7 +85,7 @@ function Navbar({ user, setUser, logout }) {
                 )}
                 buttonText="Logout"
                 onLogoutSuccess={logout}
-              ></GoogleLogout>
+              ></GoogleLogout> */}
             </div>
           </div>
           <div className="mobileBar" onClick={() => setIsMobileMenuOpen(true)}>
@@ -111,7 +114,10 @@ function Navbar({ user, setUser, logout }) {
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/mylist">
             My List
           </Link>
-          <GoogleLogout
+          <button onClick={logout} className="logoutMobile">
+            Logout
+          </button>
+          {/* <GoogleLogout
             onClick={() => setIsMobileMenuOpen(false)}
             clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
             render={(renderProps) => (
@@ -121,7 +127,7 @@ function Navbar({ user, setUser, logout }) {
             )}
             buttonText="Logout"
             onLogoutSuccess={logout}
-          ></GoogleLogout>
+          ></GoogleLogout> */}
         </div>
       </div>
     </NavbarComponent>

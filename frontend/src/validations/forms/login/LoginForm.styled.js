@@ -35,6 +35,7 @@ export const LoginComponent = styled.div`
     button {
       background-color: #e50914;
       border: none;
+      outline: none;
       height: 5rem;
       border-radius: 0.5rem;
       color: white;
@@ -43,8 +44,14 @@ export const LoginComponent = styled.div`
       cursor: pointer;
       transition: all 0.2s ease-in;
 
+      &:disabled {
+        background-color: #88181d;
+      }
+
       &:hover {
-        transform: scale(1.02);
+        &:enabled {
+          transform: scale(1.02);
+        }
       }
     }
   }

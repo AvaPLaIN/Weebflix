@@ -36,13 +36,13 @@ const App = () => {
       }
     }
     setUser(null);
-    localStorage.clear();
+    localStorage.removeItem('user');
     return false;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.clear();
+    localStorage.removeItem('user');
     history.push('/');
   };
 

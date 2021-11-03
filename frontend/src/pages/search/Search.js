@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import SearchItem from '../../components/search-item/SearchItem';
 import { getAllAnime, getAnimeByName } from '../../api/anime';
+import Loading from '../../components/loading/Loading';
 
 function Search({ user }) {
   //! USE-STATE
@@ -18,6 +19,7 @@ function Search({ user }) {
   const [animeList, setAnimeList] = useState([]);
   const [allAnimes, setAllAnimes] = useState([]);
   const [banner, setBanner] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   //! USE-EFFECT
   useEffect(() => {
@@ -30,6 +32,7 @@ function Search({ user }) {
 
   useEffect(() => {
     const animes = async () => {
+      setIsLoading(true);
       try {
         const res = await getAllAnime(user);
         setAnimeList(res);
@@ -37,6 +40,7 @@ function Search({ user }) {
       } catch (error) {
         console.error(error);
       }
+      setIsLoading(false);
     };
     animes();
   }, []);
@@ -87,9 +91,16 @@ function Search({ user }) {
         alt=""
       />
       <div className="list">
-        {animeList?.map((anime, index) => {
+        {isLoading ? (
+          <Loading />
+        ) : (
+          animeList?.map((anime, index) => {
+            return <SearchItem key={uuidv4()} anime={anime} />;
+          })
+        )}
+        {/* {animeList?.map((anime, index) => {
           return <SearchItem key={uuidv4()} anime={anime} />;
-        })}
+        })} */}
       </div>
     </SearchComponent>
   );

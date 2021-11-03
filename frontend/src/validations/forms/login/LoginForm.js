@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Input from '../../../components/input/Input';
 import loginSchema from '../../schemas/LoginValidation';
 import { Formik, Form } from 'formik';
@@ -5,9 +6,13 @@ import { GoogleLogin } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
 import { signin } from '../../../api/user';
 import { LoginComponent } from './LoginForm.styled';
+import Loading from '../../../components/loading/Loading';
 
 const LoginForm = ({ setUser, setShowLogin }) => {
   const history = useHistory();
+
+  //! USE-REF
+  const [inSubmit, setInSubmit] = useState(false);
 
   const onLoginSuccess = (res) => {
     setUser(res);
@@ -20,6 +25,7 @@ const LoginForm = ({ setUser, setShowLogin }) => {
   };
 
   const handleLoginSubmit = async (loginObject, resetForm) => {
+    setInSubmit(true);
     try {
       const res = await signin(loginObject);
       if (res) {
@@ -31,6 +37,7 @@ const LoginForm = ({ setUser, setShowLogin }) => {
       console.error(error);
     }
     resetForm({ email: '', password: '' });
+    setInSubmit(false);
   };
 
   return (
@@ -47,7 +54,9 @@ const LoginForm = ({ setUser, setShowLogin }) => {
           <Form className="loginForm">
             <Input type="email" name="email" placeholder="email" />
             <Input type="password" name="password" placeholder="password" />
-            <button type="submit">Login</button>
+            <button disabled={inSubmit} type="submit">
+              {inSubmit ? <Loading /> : 'Login'}
+            </button>
           </Form>
         )}
       </Formik>

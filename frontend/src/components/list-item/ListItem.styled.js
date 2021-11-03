@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const ListItemComponent = styled.div`
   height: 18rem;
   width: 23rem;
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
   transition-delay: ${(props) => (props.isHovored ? '0s' : '0.5s')};
   background-color: #2c2a2a;
   cursor: pointer;

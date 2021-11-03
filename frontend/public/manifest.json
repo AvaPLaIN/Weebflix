@@ -1,0 +1,15 @@
+{
+  "name": "Weebflix",
+  "short_name": "Weebflix",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
+    }
+  ],
+  "start_url": ".",
+  "display": "fullscreen",
+  "theme_color": "#0b0b0b",
+  "background_color": "#0b0b0b"
+}
