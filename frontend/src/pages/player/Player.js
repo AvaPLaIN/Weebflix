@@ -1,5 +1,5 @@
+//! IMPORT LIBRARIES
 import { useState, useEffect, useRef } from 'react';
-import { PlayerComponent } from './Player.styled';
 import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,34 +10,43 @@ import {
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router';
-import { v4 as uuidv4 } from 'uuid';
-import { updateProgress } from '../../api/anime';
 
-function Player({ user, setUser }) {
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addProgressAnime,
+  updateAnimeCount,
+  updateAnimeStatus,
+} from '../../redux/ducks/user';
+
+//! IMPORT API
+import { updateUserProgress } from '../../api/user';
+
+//! IMPORT COMPONENTS
+import { PlayerComponent } from './Player.styled';
+
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
+
+const Player = () => {
   //! INIT
+  const dispatch = useDispatch();
   const location = useLocation();
   const anime = location.anime;
+  const progress = useSelector((state) => state.user.progress);
+  const jwt = useSelector((state) => state.user.accessToken);
 
-  //! REF
-  const video = useRef();
-
-  //! CUSTOM FUNCTIONS
   const selectEpisode = () => {
-    const index = user?.data?.result?.progress.findIndex(
-      (prog) => prog.id === anime._id
-    );
+    const index = progress?.findIndex((prog) => prog.id === anime._id);
     if (index >= 0) {
-      return user?.data?.result?.progress[index].count;
+      return progress[index]?.count;
     } else {
       return 0;
     }
   };
 
-  const updateUser = async (newUser) => {
-    setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    updateProgress(user);
-  };
+  //! REF
+  const video = useRef();
 
   //! USE-STATE
   const [episode, setEpisode] = useState();
@@ -46,47 +55,48 @@ function Player({ user, setUser }) {
 
   //! USE-EFFECT
   useEffect(() => {
-    setEpisode(anime?.episodes[currEpisodeIndex]);
     setTimeout(() => {
       video?.current?.setAttribute('sandbox', '');
-    }, 100);
+    }, 10);
+    setEpisode(anime?.episodes[currEpisodeIndex]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    setIsEpisodeOpen(false);
-    const index = user?.data?.result?.progress.findIndex(
-      (prog) => prog.id === anime._id
-    );
+    const index = progress?.findIndex((prog) => prog.id === anime._id);
+    const animeId = anime?._id;
+    const animeEpisodesCount = anime?.episodes?.length;
 
-    if (index >= 0) {
-      let status = '';
-      currEpisodeIndex >= anime?.episodes?.length - 1
-        ? (status = 'completed')
-        : (status = 'currently Watching');
-      user?.data?.result?.progress.splice(index, 1, {
-        id: anime._id,
-        count: currEpisodeIndex,
-        status: status,
-        rating: user?.data?.result?.progress[index]?.rating,
-      });
-    } else {
-      user?.data?.result?.progress.push({
-        id: anime._id,
+    if (index < 0) {
+      const newAnime = {
+        id: animeId,
         count: 0,
         status: 'currently Watching',
         rating: '-',
-      });
+      };
+      dispatch(addProgressAnime(newAnime));
+    } else {
+      dispatch(updateAnimeCount(currEpisodeIndex, animeId));
+      if (currEpisodeIndex >= animeEpisodesCount - 1) {
+        dispatch(updateAnimeStatus('completed', animeId));
+      } else {
+        dispatch(updateAnimeStatus('currently Watching', animeId));
+      }
     }
-    updateUser(user);
+
     setTimeout(() => {
       video?.current?.setAttribute(
         'sandbox',
         'allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation'
       );
-    }, 100);
+    }, 10);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode]);
+
+  useEffect(() => {
+    updateUserProgress(jwt, progress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress]);
 
   //! HANDLER
   const handleSetEpisode = (index, status) => {
@@ -169,6 +179,6 @@ function Player({ user, setUser }) {
       )}
     </>
   );
-}
+};
 
 export default Player;

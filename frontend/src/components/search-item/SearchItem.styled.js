@@ -12,6 +12,7 @@ export const SearchItemComponent = styled.div`
   flex-direction: column;
   -webkit-box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease-in-out;
 
   .infoSource {
     width: 100%;

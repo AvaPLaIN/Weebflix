@@ -1,17 +1,21 @@
-import { SearchItemComponent } from './SearchItem.styled';
+//! IMPORT LIBRARIES
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+
+//! IMPORT COMPONENTS
+import { SearchItemComponent } from './SearchItem.styled';
+
+//! IMPORT HOOKS
+import useHovor from '../../hooks/useHover';
+
+//! IMPORT UTILS
 import { v4 as uuidv4 } from 'uuid';
 
-function SearchItem({ anime }) {
-  //! USE-STATE
-  const [isHovored, setIsHovored] = useState(false);
+const SearchItem = ({ anime }) => {
+  //! USE-HOOKS
+  const [hoverRef, isHovored] = useHovor(1000);
 
   return (
-    <SearchItemComponent
-      onMouseEnter={() => setIsHovored(true)}
-      onMouseLeave={() => setIsHovored(false)}
-    >
+    <SearchItemComponent ref={hoverRef}>
       {isHovored && window.innerWidth > 1200 ? (
         <iframe
           className="infoSource"
@@ -24,15 +28,15 @@ function SearchItem({ anime }) {
       <Link className="playerLink" to={{ pathname: '/player', anime: anime }}>
         <div className="infos">
           <div className="itemTitle">
-            <span>{anime?.title}</span>
+            <span>
+              {anime?.title?.slice(0, 91)}
+              {anime?.title?.length > 91 && '...'}
+            </span>
           </div>
           <div className="infoTop">
             <span>{anime?.released}</span>
             <span>{anime?.status}</span>
             <span>{anime?.episodes.length} Folgen</span>
-          </div>
-          <div className="itemDescription">
-            {anime?.description.slice(0, 80)}...
           </div>
           <div className="itemGenre">
             {anime.genres.map((genre) => {
@@ -43,6 +47,6 @@ function SearchItem({ anime }) {
       </Link>
     </SearchItemComponent>
   );
-}
+};
 
 export default SearchItem;

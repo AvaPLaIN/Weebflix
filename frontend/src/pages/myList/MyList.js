@@ -1,71 +1,52 @@
+//! IMPORT LIBRARIES
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { getProgressAnimes, updateProgress } from '../../api/anime';
-import ProgressItem from '../../components/progress-item/ProgressItem';
-import Navbar from '../../components/navbar/Navbar';
-import { MyListComponent } from './MyList.styled';
 
-const MyList = ({ user, setUser, logout }) => {
-  const [animeList, setAnimeList] = useState([]);
-  const [progress, setProgress] = useState(user?.data?.result?.progress);
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { getProgressAnimes } from '../../redux/ducks/animes';
+import { updateAnimeStatus } from '../../redux/ducks/user';
+
+//! API
+import { updateUserProgress } from '../../api/user';
+
+//! IMPORT COMPONENTS
+import { MyListComponent } from './MyList.styled';
+import Navbar from '../../components/navbar/Navbar';
+import ProgressItem from '../../components/progress-item/ProgressItem';
+
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
+
+const MyList = () => {
+  //! INIT
+  const dispatch = useDispatch();
+  const jwt = useSelector((state) => state?.user?.accessToken);
+  const progress = useSelector((state) => state?.user?.progress);
+  const animes = useSelector((state) => state?.animes?.progressAnimes);
+
+  //! USE-STATE
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    const animeList = async () => {
-      try {
-        const res = await getProgressAnimes(user);
-        setAnimeList(res);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    animeList();
+    dispatch(getProgressAnimes(jwt, progress));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const newUser = user;
-    newUser.data.result.progress = progress;
-
-    setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    updateProgress(newUser);
+    updateUserProgress(jwt, progress);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
 
   //! HANDLER
-  const handlerSetProgress = (state, id) => {
-    if (state === 'deleted') {
-      deleteProgressAnime(id);
-    } else if (state === 'canceled') {
-      changeStatusProgressAnime(state, id);
-    } else {
-      changeStatusProgressAnime(state, id);
-    }
-  };
+  const handleSetStatus = (state, id) => {
+    dispatch(updateAnimeStatus(state, id));
 
-  const deleteProgressAnime = (id) => {
-    setProgress(progress.filter((anime) => anime.id !== id));
-  };
-
-  const changeStatusProgressAnime = (state, id) => {
-    const index = progress.findIndex((anime) => anime.id === id);
-    progress[index].status = state;
-    if (state === 'completed') {
-      const anime = animeList?.find((anime) => anime?._id === id);
-      progress[index].count = anime?.episodes?.length - 1;
-    }
-    const newUser = user;
-    newUser.data.result.progress = progress;
-
-    updateProgress(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    setUser(newUser);
+    //TODO IF completed SET COUNT TO 100% -> animes.find(id).episodes.length -> dispatch setEpsodes
   };
 
   return (
     <>
-      <Navbar user={user} setUser={setUser} logout={logout} />
+      <Navbar />
       <MyListComponent>
         <img
           className="backgroundBanner"
@@ -83,16 +64,14 @@ const MyList = ({ user, setUser, logout }) => {
           </select>
         </div>
         <div className="list">
-          {progress?.map((progAnime) => {
-            if (filter === 'all' || progAnime?.status === filter) {
+          {progress?.map((progress) => {
+            if (filter === 'all' || progress?.status === filter) {
               return (
                 <ProgressItem
                   key={uuidv4()}
-                  anime={animeList?.find(
-                    (anime) => anime?._id === progAnime?.id
-                  )}
-                  progress={progAnime}
-                  setProgress={handlerSetProgress}
+                  anime={animes?.find((anime) => anime?._id === progress?.id)}
+                  progress={progress}
+                  setStatus={handleSetStatus}
                 />
               );
             }

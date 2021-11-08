@@ -1,9 +1,14 @@
+//! IMPORT LIBRARIES
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { RatingComponent } from './RatingItem.styled';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+
+//! IMPORT COMPONENTS
+import { RatingComponent } from './RatingItem.styled';
+
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
 
 const RatingItem = ({ anime, progress, setRating }) => {
   //! USE-STATE

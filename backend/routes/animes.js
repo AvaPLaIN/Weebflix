@@ -11,7 +11,7 @@ const {
   random,
   all,
   progress,
-  updateProgress,
+  getGenresAnimes,
 } = require('../controllers/anime');
 
 router.get('/findById/:id', auth, findById);
@@ -20,6 +20,6 @@ router.get('/findByName/:title', auth, findByName);
 router.get('/random', auth, random);
 router.get('/all', auth, all);
 router.post('/progress', auth, progress);
-router.post('/updateProgress', auth, updateProgress);
+router.post('/genres', auth, getGenresAnimes);
 
 module.exports = router;

@@ -1,8 +1,11 @@
+//! IMPORT LIBRARIES
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
+//! IMPORT COMPONENTS
 import { MoviePlayerComponent } from './MoviePlayer.styled';
 
 const MoviePlayer = () => {
@@ -15,6 +18,7 @@ const MoviePlayer = () => {
 
   //! USE-EFFECT
   useEffect(() => {
+    //TODO save movie progress in DB -> user.progress = {animes: [], movies: []}
     const movieProgresses =
       JSON.parse(localStorage.getItem('movieProgress')) || [];
     const movieId = movie?.title + movie?.released + movie?.length;
@@ -43,6 +47,7 @@ const MoviePlayer = () => {
     return () => {
       clearInterval(progressUpdate);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //! RENDER

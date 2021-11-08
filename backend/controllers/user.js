@@ -1,30 +1,46 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const { generateTokens } = require('../utils/jwt');
 
 const signin = async (req, res) => {
   const { email, password } = req.body;
   try {
+    //! GET USER
     const existingUser = await User.findOne({ email });
 
+    //! CHECK USER IS NULL
     if (!existingUser)
       return res.status(404).json({ message: 'User doesn´t exist!' });
 
+    //! bcrypt password and compare
     const isPasswordCorrect = await bcrypt.compare(
       password,
       existingUser.password
     );
 
+    //! CHECK PASSWORD COMPARISON
     if (!isPasswordCorrect)
       return res.status(400).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
-      process.env.JWT_TOKEN_SECRET,
-      { expiresIn: '12h' }
-    );
+    //! CREATE OBJECTS USER AND PROGRESS
+    const user = {
+      id: existingUser?._id,
+      email: existingUser?.email,
+      username: existingUser?.name,
+    };
 
-    res.status(200).json({ result: existingUser, token });
+    //! GENERATE TOKEN
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    res.status(200).json({
+      result: existingUser,
+      user,
+      progress: existingUser?.progress,
+      token: accessToken,
+      refreshToken,
+      accessToken,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong!' });
   }
@@ -61,4 +77,32 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { signin, signup };
+const refreshTokens = async (req, res) => {
+  const { accessToken, refreshToken } = generateTokens(req?.body?.user?.user);
+  res.status(200).json({ accessToken, refreshToken });
+};
+
+const updateUserProgress = async (req, res) => {
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
+
+  const progress = req?.body;
+  const userId = req?.userId;
+
+  try {
+    const user = await User.updateOne(
+      {
+        _id: userId,
+      },
+      {
+        $set: {
+          progress: progress,
+        },
+      }
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+module.exports = { signin, signup, refreshTokens, updateUserProgress };

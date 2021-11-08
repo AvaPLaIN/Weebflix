@@ -1,9 +1,31 @@
+//! IMPORT LIBRARIES
+import { useEffect } from 'react';
+
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { getGenresAnimes } from '../../redux/ducks/animes';
+
+//! IMPORT COMPONENTS
+import { HomeComponent } from './Home.styled';
 import Navbar from '../../components/navbar/Navbar';
 import Featured from '../../components/featured/Featured';
 import List from '../../components/list/List';
-import { HomeComponent } from './Home.styled';
 
-function Home({ user, setUser, logout }) {
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
+
+const Home = () => {
+  //! INIT
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const animes = useSelector((state) => state?.animes?.genreAnimes);
+
+  //! USE-EFFECT
+  useEffect(() => {
+    dispatch(getGenresAnimes(user?.accessToken, randomGenres));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const genres = [
     'Action',
     'Adventure',
@@ -41,15 +63,21 @@ function Home({ user, setUser, logout }) {
 
   return (
     <HomeComponent>
-      <Navbar user={user} setUser={setUser} logout={logout} />
-      <Featured user={user} />
+      <Navbar />
+      <Featured />
       <div className="lists">
-        {randomGenres.map((genre) => {
-          return <List user={user} key={genre} genre={genre} />;
+        {animes?.map((genreAnimes) => {
+          return (
+            <List
+              key={uuidv4()}
+              genre={genreAnimes.genre}
+              animes={genreAnimes.animes}
+            />
+          );
         })}
       </div>
     </HomeComponent>
   );
-}
+};
 
 export default Home;

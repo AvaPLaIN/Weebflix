@@ -1,10 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 
-export default function useHover() {
-  //! CONSTANTS
-  const IN_DELAY_TIME = 600;
-  const OUT_DELAY_TIME = 100;
-
+export default function useHover(IN_DELAY_TIME = 0, OUT_DELAY_TIME = 0) {
   //! USE-STATE
   const [value, setValue] = useState(false);
 
@@ -15,7 +11,7 @@ export default function useHover() {
   let inHovorEffect = null;
 
   const handleMouseOver = () => {
-    ref.current.style.zIndex = '985';
+    if (ref.current) ref.current.style.zIndex = '985';
     clearTimeout(inHovorEffect);
     inHovorEffect = setTimeout(() => {
       setValue(true);
@@ -29,10 +25,25 @@ export default function useHover() {
       setValue(false);
     }, OUT_DELAY_TIME);
     const delaySetIndex = setTimeout(() => {
-      ref.current.style.zIndex = 'auto';
+      if (ref.current) ref.current.style.zIndex = 'auto';
     }, 200);
     return () => clearTimeout(delaySetIndex);
   };
+
+  //! remove hover state *browser bug see on github
+  useEffect(() => {
+    if (value) {
+      let interval = setInterval(() => {
+        if (value && ref.current && ref.current.matches(':hover') === false) {
+          setValue(false);
+        }
+      }, 200);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   useEffect(
     () => {

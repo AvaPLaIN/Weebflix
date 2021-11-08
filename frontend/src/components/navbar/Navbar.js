@@ -1,5 +1,5 @@
+//! IMPORT LIBRARIES
 import { useState } from 'react';
-import { NavbarComponent } from './Navbar.styled';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -9,14 +9,31 @@ import {
   faBars,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-import logo from '../../assets/weebflix.png';
-import { GoogleLogout } from 'react-google-login';
 
-function Navbar({ user, setUser, logout }) {
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../redux/ducks/user';
+
+//! IMPORT COMPONENTS
+import { NavbarComponent } from './Navbar.styled';
+
+//! IMPORT ASSETS
+import logo from '../../assets/weebflix.png';
+
+const Navbar = () => {
+  //! INIT
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+
+  //! USE-STATE
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  //! HANDLER
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset ? true : false);
     return () => (window.onscroll = null);
@@ -64,7 +81,7 @@ function Navbar({ user, setUser, logout }) {
               icon={faCaretDown}
             />
             <div className="options">
-              <span>{user?.data?.result?.name || user?.profileObj?.name}</span>
+              <span>{user?.user?.username}</span>
               <Link to="/movies">Movies</Link>
               <Link to="/rating">Rating</Link>
               <Link to="/mylist">My List</Link>
@@ -73,19 +90,9 @@ function Navbar({ user, setUser, logout }) {
                 <div className="slider round"></div>
               </label>
               <span>Settings</span>
-              <button onClick={logout} className="logout">
+              <button onClick={handleLogout} className="logout">
                 Logout
               </button>
-              {/* <GoogleLogout
-                clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
-                render={(renderProps) => (
-                  <button onClick={renderProps.onClick} className="logout">
-                    Logout
-                  </button>
-                )}
-                buttonText="Logout"
-                onLogoutSuccess={logout}
-              ></GoogleLogout> */}
             </div>
           </div>
           <div className="mobileBar" onClick={() => setIsMobileMenuOpen(true)}>
@@ -114,24 +121,13 @@ function Navbar({ user, setUser, logout }) {
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/mylist">
             My List
           </Link>
-          <button onClick={logout} className="logoutMobile">
+          <button onClick={handleLogout} className="logoutMobile">
             Logout
           </button>
-          {/* <GoogleLogout
-            onClick={() => setIsMobileMenuOpen(false)}
-            clientId="174070686882-v2sgqaplluhhde3scogm6cqss8cu5u9i.apps.googleusercontent.com"
-            render={(renderProps) => (
-              <button onClick={renderProps.onClick} className="logoutMobile">
-                Logout
-              </button>
-            )}
-            buttonText="Logout"
-            onLogoutSuccess={logout}
-          ></GoogleLogout> */}
         </div>
       </div>
     </NavbarComponent>
   );
-}
+};
 
 export default Navbar;

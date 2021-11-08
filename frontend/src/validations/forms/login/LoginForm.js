@@ -8,7 +8,13 @@ import { signin } from '../../../api/user';
 import { LoginComponent } from './LoginForm.styled';
 import Loading from '../../../components/loading/Loading';
 
+//! IMPORT REDUX
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../redux/ducks/user';
+
 const LoginForm = ({ setUser, setShowLogin }) => {
+  //! INIT
+  const dispatch = useDispatch();
   const history = useHistory();
 
   //! USE-REF
@@ -25,6 +31,7 @@ const LoginForm = ({ setUser, setShowLogin }) => {
   };
 
   const handleLoginSubmit = async (loginObject, resetForm) => {
+    dispatch(loginUser(loginObject));
     setInSubmit(true);
     try {
       const res = await signin(loginObject);

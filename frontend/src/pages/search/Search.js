@@ -1,59 +1,52 @@
+//! IMPORT LIBRARIES
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import debounce from 'lodash.debounce';
-import { SearchComponent } from './Search.styled';
 import { Link } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeft,
   faSearch,
   faInfo,
 } from '@fortawesome/free-solid-svg-icons';
-import SearchItem from '../../components/search-item/SearchItem';
-import { getAllAnime, getAnimeByName } from '../../api/anime';
-import Loading from '../../components/loading/Loading';
 
-function Search({ user }) {
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getAllAnimes,
+  getFilteredByTitleAnimes,
+} from '../../redux/ducks/animes';
+
+//! IMPORT COMPONENTS
+import { SearchComponent } from './Search.styled';
+import SearchItem from '../../components/search-item/SearchItem';
+
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
+
+const Search = () => {
+  //! INIT
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const allAnimes = useSelector((state) => state?.animes?.allAnimes);
+  const filteredAnimes = useSelector(
+    (state) => state?.animes?.filteredByTitleAnimes
+  );
+
   //! USE-STATE
   const [searchTitle, setSearchTitle] = useState('');
-  const [animeList, setAnimeList] = useState([]);
-  const [allAnimes, setAllAnimes] = useState([]);
-  const [banner, setBanner] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   //! USE-EFFECT
   useEffect(() => {
-    searchTitle ? searchList(searchTitle) : setAnimeList(allAnimes);
-  }, [searchTitle]);
-
-  useEffect(() => {
-    setBanner(animeList && animeList[0]?.banner);
-  }, [animeList]);
-
-  useEffect(() => {
-    const animes = async () => {
-      setIsLoading(true);
-      try {
-        const res = await getAllAnime(user);
-        setAnimeList(res);
-        setAllAnimes(res);
-      } catch (error) {
-        console.error(error);
-      }
-      setIsLoading(false);
-    };
-    animes();
+    dispatch(getAllAnimes(user?.accessToken));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //! AXIOS
-  const searchList = async (searchTitle) => {
-    try {
-      const res = await getAnimeByName(user, searchTitle);
-      setAnimeList(res);
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    if (searchTitle) {
+      dispatch(getFilteredByTitleAnimes(user?.accessToken, searchTitle));
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTitle]);
 
   //! HANDLER
   const handlerSearchTitle = (e) => {
@@ -68,7 +61,7 @@ function Search({ user }) {
       <div className="navbar">
         <Link to="/" className="backwards">
           <FontAwesomeIcon icon={faArrowLeft} />
-          <span>Zurück</span>
+          <span>Back</span>
         </Link>
         <div className="searchbar">
           <FontAwesomeIcon icon={faSearch} />
@@ -77,33 +70,26 @@ function Search({ user }) {
         <div className="info">
           <FontAwesomeIcon icon={faInfo} className="infoHover" />
           <div className="container">
-            <span>japanische Titel wenn es keine Englischen gibt!</span>
+            <span>Look out for Japanese Titles!</span>
           </div>
         </div>
       </div>
       <img
         className="backgroundBanner"
-        src={
-          banner
-            ? banner
-            : 'https://images6.alphacoders.com/785/thumb-1920-785425.png'
-        }
+        src="https://images6.alphacoders.com/785/thumb-1920-785425.png"
         alt=""
       />
       <div className="list">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          animeList?.map((anime, index) => {
-            return <SearchItem key={uuidv4()} anime={anime} />;
-          })
-        )}
-        {/* {animeList?.map((anime, index) => {
-          return <SearchItem key={uuidv4()} anime={anime} />;
-        })} */}
+        {searchTitle
+          ? filteredAnimes?.map((anime) => {
+              return <SearchItem key={uuidv4()} anime={anime} />;
+            })
+          : allAnimes?.map((anime) => {
+              return <SearchItem key={uuidv4()} anime={anime} />;
+            })}
       </div>
     </SearchComponent>
   );
-}
+};
 
 export default Search;

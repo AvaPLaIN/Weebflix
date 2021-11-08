@@ -1,7 +1,5 @@
+//! IMPORT LIBRARIES
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { ProgressItemComponent } from './ProgressItem.styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTrash,
@@ -11,42 +9,40 @@ import {
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
 
-const ProgressItem = ({ anime, progress, setProgress }) => {
-  //! USE-STATE
-  const [isHovored, setIsHovored] = useState(false);
+//! IMPORT COMPONENTS
+import { ProgressItemComponent } from './ProgressItem.styled';
 
-  //! USE-REF
-  const hoverRef = useRef();
+//! IMPORT REDUX
+import { useDispatch } from 'react-redux';
+import { updateAnimeCount } from '../../redux/ducks/user';
 
-  //! remove hover state *browser bug see on github
-  useEffect(() => {
-    if (isHovored) {
-      let interval = setInterval(() => {
-        if (
-          isHovored &&
-          hoverRef.current &&
-          hoverRef.current.matches(':hover') === false
-        ) {
-          setIsHovored(false);
-        }
-      }, 200);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+//! IMPORT HOOKS
+import useHovor from '../../hooks/useHover';
+
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
+
+const ProgressItem = ({ anime, progress, setStatus }) => {
+  //! INIT
+  const dispatch = useDispatch();
+
+  //! USE-HOOKS
+  const [hoverRef, isHovored] = useHovor(1000);
 
   //! HANDLER
-  const handlerProgress = (state) => {
+  const handleProgress = (state) => {
     const id = anime?._id;
-    setProgress(state, id);
+
+    if (state === 'completed') {
+      const newEpisodeCount = anime?.episodes?.length - 1;
+      dispatch(updateAnimeCount(newEpisodeCount, id));
+    }
+
+    setStatus(state, id);
   };
 
   return (
     <ProgressItemComponent
-      onMouseEnter={() => setIsHovored(true)}
-      onMouseLeave={() => setIsHovored(false)}
       progress={Math.round(
         ((progress?.count + 1) / anime?.episodes?.length) * 100
       )}
@@ -87,15 +83,15 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
       <Link className="playerLink" to={{ pathname: '/player', anime: anime }}>
         <div className="infos">
           <div className="itemTitle">
-            <span>{anime?.title}</span>
+            <span>
+              {anime?.title?.slice(0, 91)}
+              {anime?.title?.length > 91 && '...'}
+            </span>
           </div>
           <div className="infoTop">
             <span>{anime?.released}</span>
             <span>{anime?.status}</span>
             <span>{anime?.episodes.length} Folgen</span>
-          </div>
-          <div className="itemDescription">
-            {anime?.description.slice(0, 50)}...
           </div>
           <div className="itemGenre">
             {anime?.genres?.map((genre) => {
@@ -107,7 +103,7 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
       <div className="stateOfAnime">
         <div className="container">
           <button
-            onClick={() => handlerProgress('deleted')}
+            onClick={() => handleProgress('deleted')}
             className="changeProgress delete"
           >
             <FontAwesomeIcon icon={faTrash} />
@@ -118,7 +114,7 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
         </div>
         <div className="container">
           <button
-            onClick={() => handlerProgress('canceled')}
+            onClick={() => handleProgress('canceled')}
             className="changeProgress cancel"
           >
             <FontAwesomeIcon icon={faTimes} />
@@ -129,7 +125,7 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
         </div>
         <div className="container">
           <button
-            onClick={() => handlerProgress('currently Watching')}
+            onClick={() => handleProgress('currently Watching')}
             className="changeProgress currently"
           >
             <FontAwesomeIcon icon={faArrowRight} />
@@ -140,7 +136,7 @@ const ProgressItem = ({ anime, progress, setProgress }) => {
         </div>
         <div className="container">
           <button
-            onClick={() => handlerProgress('completed')}
+            onClick={() => handleProgress('completed')}
             className="changeProgress completed"
           >
             <FontAwesomeIcon icon={faCheck} />

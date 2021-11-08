@@ -14,7 +14,7 @@ const addAnime = async (req, res) => {
 };
 
 const findById = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
   try {
     const anime = await Anime.findById(req.params.id);
     res.status(200).json(anime);
@@ -24,7 +24,7 @@ const findById = async (req, res) => {
 };
 
 const findByGenre = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
   try {
     const animesByGenre = await Anime.aggregate([
       { $match: { genres: req.params.genre } },
@@ -37,7 +37,7 @@ const findByGenre = async (req, res) => {
 };
 
 const findByName = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
   try {
     const animesByTitle = await Anime.find({
       title: { $regex: new RegExp(`.*${req.params.title}.*`), $options: 'i' },
@@ -49,7 +49,7 @@ const findByName = async (req, res) => {
 };
 
 const random = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
   try {
     const anime = await Anime.aggregate([{ $sample: { size: 1 } }]);
     res.status(200).json(anime);
@@ -59,7 +59,7 @@ const random = async (req, res) => {
 };
 
 const all = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
   try {
     const animes = await Anime.find();
     res.status(200).json(animes);
@@ -69,9 +69,8 @@ const all = async (req, res) => {
 };
 
 const progress = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
-
-  const { progress } = req?.body?.data?.result;
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
+  const progress = req?.body;
   if (!progress) return res.json({ message: 'No Progress!' });
 
   const ids = [];
@@ -89,23 +88,21 @@ const progress = async (req, res) => {
   }
 };
 
-const updateProgress = async (req, res) => {
-  if (!req.userId) return res.json({ message: 'Unauthenticated' });
-
-  const { progress, email } = req?.body?.data?.result;
-
+const getGenresAnimes = async (req, res) => {
+  if (!req.userId) return res.status(401).json({ message: 'Unauthenticated' });
+  const genres = req?.body?.genres || [];
+  const animes = [];
   try {
-    const user = await User.updateOne(
-      {
-        email: email,
-      },
-      {
-        $set: {
-          progress: progress,
-        },
-      }
-    );
-    res.status(200).json(user);
+    for (let i = 0; i < genres?.length; i++) {
+      const animeListByGenre = { genre: genres[i], animes: [] };
+      const animesByGenre = await Anime.aggregate([
+        { $match: { genres: genres[i] } },
+        { $sample: { size: 30 } },
+      ]);
+      animeListByGenre.animes = animesByGenre;
+      animes.push(animeListByGenre);
+    }
+    res.status(200).json(animes);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -118,5 +115,5 @@ module.exports = {
   random,
   all,
   progress,
-  updateProgress,
+  getGenresAnimes,
 };

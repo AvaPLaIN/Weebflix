@@ -1,45 +1,51 @@
+//! IMPORT LIBRARIES
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { getProgressAnimes, updateProgress } from '../../api/anime';
-import { RatingComponent } from './Rating.styled';
-import RatingItem from '../../components/RatingItem/RatingItem';
-import Navbar from '../../components/navbar/Navbar';
 
-const Rating = ({ user, setUser, logout }) => {
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { getProgressAnimes } from '../../redux/ducks/animes';
+import { updateAnimeRating } from '../../redux/ducks/user';
+
+//! API
+import { updateUserProgress } from '../../api/user';
+
+//! IMPORT COMPONENTS
+import { RatingComponent } from './Rating.styled';
+import Navbar from '../../components/navbar/Navbar';
+import RatingItem from '../../components/RatingItem/RatingItem';
+
+//! IMPORT UTILS
+import { v4 as uuidv4 } from 'uuid';
+
+const Rating = () => {
+  //! INIT
+  const dispatch = useDispatch();
+  const jwt = useSelector((state) => state?.user?.accessToken);
+  const progress = useSelector((state) => state?.user?.progress);
+  const animes = useSelector((state) => state?.animes?.progressAnimes);
+
   //! USE-STATE
-  const [animeList, setAnimeList] = useState([]);
-  const [progress, setProgress] = useState(user?.data?.result?.progress);
   const [filter, setFilter] = useState('all');
 
   //! USE-EFFECT
   useEffect(() => {
-    const animeList = async () => {
-      try {
-        const res = await getProgressAnimes(user);
-        setAnimeList(res);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    animeList();
+    dispatch(getProgressAnimes(jwt, progress));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //! HANDLER
-  const changeRatingAnime = (rating, id) => {
-    const index = progress.findIndex((anime) => anime.id === id);
-    progress[index].rating = rating;
+  useEffect(() => {
+    updateUserProgress(jwt, progress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress]);
 
-    const newUser = user;
-    newUser.data.result.progress = progress;
-    updateProgress(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    setUser(newUser);
+  //! HANDLER
+  const handleSetRating = (rating, id) => {
+    dispatch(updateAnimeRating(rating, id));
   };
 
   return (
     <>
-      <Navbar user={user} setUser={setUser} logout={logout} />
+      <Navbar />
       <RatingComponent>
         <img
           className="backgroundBanner"
@@ -57,29 +63,27 @@ const Rating = ({ user, setUser, logout }) => {
           </select>
         </div>
         <div className="list">
-          {progress?.map((progAnime) => {
+          {progress?.map((progress) => {
             if (
               //! RENDER ALL
               filter === 'all' ||
               //! RENDER UNRATED COMPONENTS
               (filter === 'unrated' &&
-                (progAnime?.rating === '0' || progAnime?.rating === '-')) ||
+                (progress?.rating === '0' || progress?.rating === '-')) ||
               //! RENDER RATED COMPONENTS
               (filter === 'rated' &&
-                progAnime?.rating !== '0' &&
-                progAnime?.rating !== '-') ||
+                progress?.rating !== '0' &&
+                progress?.rating !== '-') ||
               //! RENDER TOP COMPONENTS
               (filter === 'top' &&
-                (progAnime?.rating === '9' || progAnime?.rating === '10'))
+                (progress?.rating === '9' || progress?.rating === '10'))
             ) {
               return (
                 <RatingItem
                   key={uuidv4()}
-                  anime={animeList?.find(
-                    (anime) => anime?._id === progAnime?.id
-                  )}
-                  progress={progAnime}
-                  setRating={changeRatingAnime}
+                  anime={animes?.find((anime) => anime?._id === progress?.id)}
+                  progress={progress}
+                  setRating={handleSetRating}
                 />
               );
             }

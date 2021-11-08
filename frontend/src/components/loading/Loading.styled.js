@@ -4,6 +4,7 @@ export const LoadingComponent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 
   .loader {
     width: 32px;

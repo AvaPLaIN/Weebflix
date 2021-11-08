@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
+//! IMPORT LIBRARIES
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FeaturedComponent } from './Featured.styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { getRandomAnime } from '../../api/anime';
 
-function Featured({ user }) {
-  //! USE-STATE
-  const [anime, setAnime] = useState({});
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { getRandomAnime } from '../../redux/ducks/animes';
+
+//! IMPORT COMPONENTS
+import { FeaturedComponent } from './Featured.styled';
+
+function Featured() {
+  //! INIT
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const anime = useSelector((state) => state?.animes?.randomAnime);
 
   //! USE-EFFECT
   useEffect(() => {
-    const animeList = async () => {
-      try {
-        const res = await getRandomAnime(user);
-        setAnime(res);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    animeList();
+    dispatch(getRandomAnime(user?.accessToken));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

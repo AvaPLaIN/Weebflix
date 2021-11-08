@@ -1,10 +1,17 @@
-import { ListItemComponent } from './ListItem.styled';
-import useHover from '../../hooks/useHover';
+//! IMPORT LIBRARIES
 import { Link } from 'react-router-dom';
+
+//! IMPORT COMPONENTS
+import { ListItemComponent } from './ListItem.styled';
+
+//! IMPORT HOOKS
+import useHover from '../../hooks/useHover';
+
+//! IMPORT UTILS
 import { v4 as uuidv4 } from 'uuid';
 
 function ListItem({ anime }) {
-  const [hovorRef, isHovored] = useHover();
+  const [hovorRef, isHovored] = useHover(600, 100);
 
   return (
     <ListItemComponent ref={hovorRef} isHovored={isHovored}>

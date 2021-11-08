@@ -3,43 +3,14 @@ import axios from 'axios';
 //! url
 const url = 'http://localhost:8800/api';
 
-export const getRandomAnime = async (user) => {
-  const token = user?.tokenId || user?.data.token;
+export const getFilteredByTitleAnimes = async (jwt, filter) => {
   try {
-    const res = await axios.get(`${url}/animes/random`, {
+    const res = await axios.get(`${url}/animes/findByName/${filter}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${jwt}`,
       },
     });
-    return res?.data[0];
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const getAnimeByGenre = async (user, genre) => {
-  const token = user?.tokenId || user?.data.token;
-  try {
-    const res = await axios.get(`${url}/animes/findByGenre/${genre}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res?.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const getAnimeByName = async (user, title) => {
-  const token = user?.tokenId || user?.data.token;
-  try {
-    const res = await axios.get(`${url}/animes/findByName/${title}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res?.data;
+    return res;
   } catch (error) {
     console.error(error);
   }
@@ -59,29 +30,58 @@ export const getAllAnime = async (user) => {
   }
 };
 
-export const getProgressAnimes = async (user) => {
-  const token = user?.tokenId || user?.data.token;
+export const getProgressAnimes = async (jwt, progress) => {
   try {
-    const res = await axios.post(`${url}/animes/progress`, user, {
+    const res = await axios.post(`${url}/animes/progress`, progress, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${jwt}`,
       },
     });
-    return res?.data;
+    return res;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const updateProgress = async (user) => {
-  const token = user?.tokenId || user?.data.token;
+//! REDUX API
+export const getReduxAllAnime = async (jwt) => {
   try {
-    const res = await axios.post(`${url}/animes/updateProgress`, user, {
+    const res = await axios.get(`${url}/animes/all`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${jwt}`,
       },
     });
-    return res?.data;
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getReduxGenresAnime = async (jwt, genres) => {
+  try {
+    const res = await axios.post(
+      `${url}/animes/genres`,
+      { genres: genres },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getReduxRandomAnime = async (jwt) => {
+  try {
+    const res = await axios.get(`${url}/animes/random`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    return res;
   } catch (error) {
     console.error(error);
   }

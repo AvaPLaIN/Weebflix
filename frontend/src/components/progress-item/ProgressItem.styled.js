@@ -12,6 +12,7 @@ export const ProgressItemComponent = styled.div`
   -webkit-box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.6);
   position: relative;
+  transition: all 0.2s ease-in-out;
 
   .infoSource {
     width: 100%;
@@ -120,7 +121,8 @@ export const ProgressItemComponent = styled.div`
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    justify-content: space-around;
+    gap: 1rem;
+    justify-content: space-between;
     padding: 1rem;
 
     .itemTitle {

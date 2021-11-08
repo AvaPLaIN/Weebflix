@@ -9,8 +9,25 @@ export const signin = async (formData) =>
 export const signup = async (formData) =>
   await axios.post(`${url}/users/signup`, formData);
 
+export const refreshTokens = async (data) =>
+  await axios.post(`${url}/users/refreshTokens`, data);
+
+export const updateUserProgress = async (jwt, progress) => {
+  try {
+    const res = await axios.post(`${url}/users/updateProgress`, progress, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const isTokenValid = async (user) => {
   const token = user?.tokenId || user?.data?.token;
+
   try {
     const res = await axios.post(
       `http://localhost:8800/api/auth/isTokenValid`,

@@ -1,26 +1,30 @@
+//! IMPORT LIBRARIES
 import { useState, useEffect } from 'react';
+
+//! IMPORT REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllMovies } from '../../redux/ducks/movies';
+
+//! IMPORT COMPONENTS
 import { MovieComponent } from './Movie.styled';
 import Navbar from '../../components/navbar/Navbar';
-import { getMovies } from '../../api/movie';
 import MovieList from '../../components/movie-list/MovieList';
+
+//! IMPORT UTILS
 import { v4 as uuidv4 } from 'uuid';
 
-const Movie = ({ user, setUser, logout }) => {
+const Movie = () => {
+  //! INIT
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const movies = useSelector((state) => state?.movies?.movies);
+
   //! USE-STATE
-  const [movies, setMovies] = useState();
   const [isSmooth, setIsSmooth] = useState(false);
 
   //! USE-EFFECT
   useEffect(() => {
-    const movies = async () => {
-      try {
-        const res = await getMovies(user);
-        setMovies(res);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    movies();
+    dispatch(getAllMovies(user.accessToken));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -31,7 +35,7 @@ const Movie = ({ user, setUser, logout }) => {
 
   return (
     <>
-      <Navbar user={user} setUser={setUser} logout={logout} />
+      <Navbar />
       <MovieComponent>
         <img
           className="backgroundBanner"
