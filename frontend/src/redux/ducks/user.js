@@ -76,7 +76,6 @@ const reducer = (state = initialState, action) => {
 
     case ADD_PROGRESS_ANIME:
       const { newProgressAnime } = action;
-      console.log(newProgressAnime);
       return {
         ...state,
         progress: [...state.progress, newProgressAnime],

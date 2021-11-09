@@ -174,6 +174,7 @@ const Player = () => {
             title="Player"
             src={episode}
             ref={video}
+            onload="bindings(this)"
           ></iframe>
         </PlayerComponent>
       )}
