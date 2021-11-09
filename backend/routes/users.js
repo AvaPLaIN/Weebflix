@@ -9,12 +9,13 @@ const {
   signup,
   refreshTokens,
   updateUserProgress,
+  checkUserAuth,
 } = require('../controllers/user');
 
 router.post('/signin', signin);
 router.post('/signup', signup);
 router.post('/refreshTokens', refreshTokens);
 router.post('/updateProgress', auth, updateUserProgress);
-//TODO router.post('/signup', auth, signup);
+router.post('/refreshUser', checkUserAuth);
 
 module.exports = router;

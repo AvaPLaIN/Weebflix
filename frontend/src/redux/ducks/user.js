@@ -13,7 +13,7 @@ export const ADD_PROGRESS_ANIME = 'redux/user/ADD_PROGRESS_ANIME';
 //! INIT
 const initialState = {
   user: undefined,
-  progress: [],
+  progress: undefined,
   accessToken: undefined,
   refreshToken: undefined,
 };

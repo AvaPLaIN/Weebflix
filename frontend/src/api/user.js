@@ -42,3 +42,16 @@ export const isTokenValid = async (user) => {
     console.error(error);
   }
 };
+
+export const refreshUser = async (accessToken, refreshToken, user) => {
+  try {
+    const res = await axios.post(`${url}/users/refreshUser`, {
+      accessToken,
+      refreshToken,
+      user,
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

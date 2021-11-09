@@ -1,10 +1,13 @@
 //! IMPORT LIBRARIES
-import { useEffect, useRef, Suspense, lazy } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 //! IMPORT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, setUser } from './redux/ducks/user';
+
+//! IMPORT API
+import { refreshUser } from './api/user';
 
 //! IMPORT COMPONENTS
 import Loading from './components/loading/Loading';
@@ -27,23 +30,27 @@ const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
-  //! USE-REF
-  const firstUpdate = useRef(true);
-
   //! USE-EFFECT
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem('user'));
-    //TODO check user auth with backend -> return user -> set new User -> (get new Data)
+
+    const checkUserAuth = async () => {
+      const newUser = await refreshUser(
+        localUser?.accessToken,
+        localUser?.refreshToken,
+        localUser?.user
+      );
+      dispatch(setUser(newUser));
+    };
+    checkUserAuth();
+
     localUser && dispatch(setUser(localUser));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     localStorage.setItem('user', JSON.stringify(user));
-    if (firstUpdate?.current) {
-      firstUpdate.current = false;
-      return;
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   //! HANDLERS
