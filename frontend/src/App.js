@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 //! IMPORT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, setUser } from './redux/ducks/user';
+import { updateAnimeProgress } from './redux/ducks/user';
 
 //! IMPORT API
 import { refreshUser } from './api/user';
@@ -34,15 +35,15 @@ const App = () => {
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem('user'));
 
-    // const checkUserAuth = async () => {
-    //   const newUser = await refreshUser(
-    //     localUser?.accessToken,
-    //     localUser?.refreshToken,
-    //     localUser?.user
-    //   );
-    //   dispatch(setUser(newUser));
-    // };
-    // checkUserAuth();
+    const checkUserAuth = async () => {
+      const newUser = await refreshUser(
+        localUser?.accessToken,
+        localUser?.refreshToken,
+        localUser?.user
+      );
+      dispatch(updateAnimeProgress(newUser?.progress));
+    };
+    checkUserAuth();
 
     localUser && dispatch(setUser(localUser));
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -5,6 +5,7 @@ export const LOGIN_USER = 'rexux/user/login';
 export const LOGOUT_USER = 'rexux/user/logout';
 export const UPDATE_TOKENS = 'redux/user/update_token';
 export const UPDATE_TOKENS_SUCC = 'redux/user/update_token_succ';
+export const UPDATE_ANIME_PROGRESS = 'redux/user/UPDATE_ANIME_PROGRESS';
 export const UPDATE_PROGRESS_STATUS = 'redux/user/UPDATE_PROGRESS_STATUS';
 export const UPDATE_PROGRESS_COUNT = 'redux/user/UPDATE_PROGRESS_COUNT';
 export const UPDATE_PROGRESS_RATING = 'redux/user/UPDATE_PROGRESS_RATING';
@@ -74,6 +75,13 @@ const reducer = (state = initialState, action) => {
         ),
       };
 
+    case UPDATE_ANIME_PROGRESS:
+      const { newProgress } = action;
+      return {
+        ...state,
+        progress: newProgress,
+      };
+
     case ADD_PROGRESS_ANIME:
       const { newProgressAnime } = action;
       return {
@@ -138,6 +146,11 @@ export const updateAnimeRating = (progRating, id) => ({
   type: UPDATE_PROGRESS_RATING,
   progRating,
   id,
+});
+
+export const updateAnimeProgress = (newProgress) => ({
+  type: UPDATE_ANIME_PROGRESS,
+  newProgress,
 });
 
 export const addProgressAnime = (newProgressAnime) => ({

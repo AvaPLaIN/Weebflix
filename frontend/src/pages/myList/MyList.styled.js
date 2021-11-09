@@ -33,6 +33,7 @@ export const MyListComponent = styled.div`
     gap: 2rem;
 
     select {
+      z-index: 998;
       appearance: none;
       outline: none;
       border: 0;
@@ -41,6 +42,10 @@ export const MyListComponent = styled.div`
       color: white;
       padding: 1.5rem;
       border-radius: 1rem;
+
+      option {
+        z-index: 999;
+      }
     }
   }
 
