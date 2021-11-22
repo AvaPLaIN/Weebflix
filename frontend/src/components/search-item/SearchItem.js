@@ -23,7 +23,12 @@ const SearchItem = ({ anime }) => {
           title="trailer"
         ></iframe>
       ) : (
-        <img className="infoSource" src={anime?.thumnail} alt=""></img>
+        <img
+          className="infoSource"
+          loading="lazy"
+          src={anime?.thumnail}
+          alt=""
+        ></img>
       )}
       <Link className="playerLink" to={{ pathname: '/player', anime: anime }}>
         <div className="infos">
